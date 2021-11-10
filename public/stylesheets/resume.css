@@ -1,0 +1,73 @@
+/* global variables*/
+:root {
+    --blue: #163a99;
+    --white: #ffffff;
+}
+
+/* body text font */
+body {
+    font-family: Arial;
+    font-size: 1vw;
+}
+
+/* common styles for header, section, and footer */
+header, section, footer {
+    box-sizing: border-box;
+    width: 90%;
+    margin: 0 5% 0;
+    padding: 5px 20px 5px;
+}
+
+/* header */
+#headshot-photo {
+    width: 10%;
+    float: right;
+}
+
+.blue-bg {
+    background-color: var(--blue);
+}
+
+h1 {
+    font-size: 3vw;
+}
+
+header h1, header p {
+    color: var(--white);
+}
+/* sections*/
+h2 {
+    font-size: 1.5vw;
+    border-color: var(--blue);
+    border-style: hidden hidden solid;
+    margin: 5px 0px 0px;
+    padding: 0px 0px 0px;
+}
+
+section p {
+    margin: 5px 10px 0px;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+span.italic {
+    font-style: italic;
+}
+
+span.right {
+    float: right;
+}
+
+ul {
+    margin: 5px 0px 20px;
+    padding: 0px 40px 0px;
+}
+
+/* footer */
+footer p {
+    text-align: right;
+    color: gray;
+}
+
