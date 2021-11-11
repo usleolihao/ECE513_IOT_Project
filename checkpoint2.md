@@ -57,59 +57,49 @@
 		- [ ] Control smart light
 	- [ ] Does not require fancy video editing. Also, does not need to include any verbal description (optional). Focus on showing the overall operations.
 3. Documentation
-
-● Your state machines/state charts for the final implementation (PDF file) ○ i.e., should include all functionalities
-
-● README.txt file ○ Team information (name, email, project level) ○ AWS address (i.e., URL) ○ Your video demo information (i.e., where to watch) ○ Your particle device information (i.e., what are you using for your project?) ○ Simple description of your implementation
-
-■ Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) ○ How to use your systems
-
+	- [ ]  Your state machines/state charts for the final implementation (PDF file)
+		- [ ]  i.e., should include all functionalities
+	- [ ]  README.txt file
+		- [ ] Team information (name, email, project level) 
+		- [ ] AWS address (i.e., URL) 
+		- [ ] Your video demo information (i.e., where to watch) 
+		- [ ] Your particle device information (i.e., what are you using for your project?) 
+		- [ ] Simple description of your implementation
+			- [ ]  Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) 
+		- [ ] How to use your systems
 4. Submission
-
-● Please prepare the below folder structure for your submission
-
-● Folder structure (where green color text represents a folder) ○ Particle
-
-■ All your code for the particle firmware here ○
-
-○
-
-Localhost
-
-■ All your code for the localhost
-
-■ Should not include package-lock.json and node_modules AWS
-
-■ All your code for your AWS
-
-■ Should not include package-lock.json and node_modules ○ README.txt ○ PDF file for your state machines/state charts
-
-● Submit one single zip file to D2L ○ File name: [Your team #]_[Your project level]_[LastName - at least one].zip
-
-■ For your team #, see Project teams
-
-■ (example) 30_ECE513_Hong.zip
-
-○ Final project Checkpoint 2 submission (due 11/23, 11:59PM) in Assignments
-
+	- [ ] Please prepare the below folder structure for your submission
+	- [ ] Folder structure (where <span style="color: green;">green color</span> text represents a folder)
+		- [ ] <span style="color: green;">Particle</span>
+			- [ ] All your code for the particle firmware here
+		- [ ] <span style="color: green;">Localhost</span>
+			- [ ] All your code for the localhost
+			- [ ] __Should **not** include package-lock.json and node_modules__ 
+		- [ ] AWS
+			- [ ] All your code for your AWS
+			- [ ] Should not include package-lock.json and node_modules 
+		- [ ] README.txt
+		- [ ] PDF file for your state machines/state charts
+	- [ ] Submit one single zip file to D2L
+		- [ ] File name: [Your team #]_[Your project level]_[LastName - at least one].zip
+			- [ ] For your team #, see Project teams
+			- (example) 30_ECE513_Hong.zip
+	- [ ] Final project Checkpoint 2 submission (due 11/23, 11:59PM) in Assignments
 5. Rubric
-
-● State machine / state charts submission: 1 point (but no submission: -1 point)
-
-● Video demo: 1 point (but no video demo: -1 point)
-
-● Code submission: 1 point (but missing one of parts: -1 point)
-
-● Particle device operations: 2 points ○ Localhost related operations: 1 points ○ AWS related operations: 1 points
-
-● Localhost operations: 2 points ○ Display information: 1 points ○ Control: 1 points
-
-● AWS operations: 3 points ○ Client side: 1 point ○ Database: 1 point ○ Routers: 1 point
-
+	- [ ] State machine / state charts submission: 1 point (but no submission: -1 point)
+	- [ ] Video demo: 1 point (but no video demo: -1 point)
+	- [ ] Code submission: 1 point (but missing one of parts: -1 point)
+	- [ ] Particle device operations: 2 points 
+		- [ ] Localhost related operations: 1 points 
+		- [ ] AWS related operations: 1 points
+	- [ ] Localhost operations: 2 points 
+		- [ ] Display information: 1 points 
+		- [ ] Control: 1 points
+	- [ ]  AWS operations: 3 points 
+		- [ ] Client side: 1 point 
+		- [ ] Database: 1 point 
+		- [ ] Routers: 1 point
 6. Others
-
-● If any requirement is not clear, you should post publicly on Q&A document to clarify the requirements. Any clarifications needed will be added to this document and marked as Clarification.
-
-● You are also responsible for monitoring the Q&A document for any project requirements and clarifications as well as Project description document.
-
-● Late submission means ZERO credits!!! NO exceptions! You can submit your file unlimitedly. So, you can upload partial outcomes to avoid any potential risks.
+	- If any requirement is not clear, you should post publicly on Q&A document to clarify the requirements. Any clarifications needed will be added to this document and marked as Clarification.
+	- You are also responsible for monitoring the Q&A document for any project requirements and clarifications as well as Project description document.
+	- Late submission means ZERO credits!!! NO exceptions! You can submit your file unlimitedly. So, you can upload partial outcomes to avoid any potential risks.
