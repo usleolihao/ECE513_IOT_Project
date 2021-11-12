@@ -3,14 +3,12 @@
 ### Team information
 
 - Team Member: Lihao Guo
-	- email: leolihao@email.arizona.edu
-	- project contribution: 40%
+    - email: leolihao@email.arizona.edu
 - Team Member: Jaewan Kim
-	- email: kimj2@email.arizona.edu
-	- project contribution: 30%
+    - email: kimj2@email.arizona.edu
 - Team Member: Nasser Salem Albalawi
-	- email: nasseralbalawi@email.arizona.edu
-	- project contribution: 30%
+    - email: nasseralbalawi@email.arizona.edu
+- Project level: ECE513
 
 ### AWS address
 
@@ -20,7 +18,7 @@
 
 ### Video demo information
 
-[link of video demo]
+[link of video demo](#)
 
 ### Particle Device Information
 
@@ -33,4 +31,26 @@
 
 ### Response Codes
 
+Recommended HTTP response code
+
+|Code| response status          |
+|----|--------------------------|
+| 200| OK (request succeeded)   |
+| 201| Created                  |
+| 400| bad request              |
+| 401| Unauthorized             |
+| 404| Not found                |
+| 500| Internal server errors   |
+
 ### API
+
+## Instruction
+
+### Installation
+
+```bash
+npm install
+Debug=(yourdir):* npm start
+```
+
+

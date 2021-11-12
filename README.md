@@ -8,13 +8,11 @@ This repertory contains files of `SMART HOME Project`.
 
 - Team Member: Lihao Guo
     - email: leolihao@email.arizona.edu
-    - project contribution: 40%
 - Team Member: Jaewan Kim
     - email: kimj2@email.arizona.edu
-    - project contribution: 30%
 - Team Member: Nasser Salem Albalawi
     - email: nasseralbalawi@email.arizona.edu
-    - project contribution: 30%
+- Project level: ECE513
 
 ### AWS address
 
@@ -36,6 +34,17 @@ This repertory contains files of `SMART HOME Project`.
 ### Data
 
 ### Response Codes
+
+Recommended HTTP response code
+
+|Code| response status          |
+|----|--------------------------|
+| 200| OK (request succeeded)   |
+| 201| Created                  |
+| 400| bad request              |
+| 401| Unauthorized             |
+| 404| Not found                |
+| 500| Internal server errors   |
 
 ### API
 
