@@ -13,10 +13,12 @@ The innovative home application is a low-cost IoT-enabled web application for:
 
 ## Todo List
 
+- [ ] Sign-up interface 
+- [ ] Sign-in interface 
 
 ## Updates
 
-<iframe src="updates.md" ></iframe>
+<iframe src="/updates.md" ></iframe>
 
 ## Overview
 
@@ -25,5 +27,5 @@ The innovative home application is a low-cost IoT-enabled web application for:
 - The web application uses responsive design to allow users to view the application seamlessly on desktop, tablet, and mobile devices.
 - The web application should have a navigation menu.
 - The web application should use a responsive design to be viewable on desktops, tablets, and smartphones. The web application should have the index.html page to introduce your team and your project.
-- The web application should have the reference.html page to list your third-party APIS, libraries, and code.
+- The web application should have the `reference.html` page to list your third-party APIS, libraries, and code.
 
