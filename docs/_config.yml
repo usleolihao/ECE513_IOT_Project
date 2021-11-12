@@ -1,3 +1,9 @@
 theme: jekyll-theme-architect
+
+title: [Smart Home Application Team 16]
+description: [The intelligent home application for the ECE513 project at University of Arizona]
+
 github:
   is_project_page: false
+  zip_url: https://www.lgcyaxi.com
+  another_url: https://www.lgcyaxi.com
