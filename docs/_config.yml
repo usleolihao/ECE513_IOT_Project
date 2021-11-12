@@ -4,9 +4,10 @@ plugins:
 
 
 title: [Smart Home]
-description: [The intelligent home application for the ECE513 project at University of Arizona]
+description: [It is an Intelligent Home Application of ECE513 project for Team 16 at the University of Arizona.]
+show_downloads: [true]
 
 github:
-  is_project_page: false
-  zip_url: https://www.lgcyaxi.com
-  another_url: https://www.lgcyaxi.com
+  # is_project_page: false
+  # zip_url: https://www.lgcyaxi.com
+  # tar_url: https://www.lgcyaxi.com
