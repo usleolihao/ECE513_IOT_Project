@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Particle cloud example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      .centerDiv {
+        position:absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -20%);
+        width: 1000px;
+      }
+    </style>
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      var myInterval = null;
+
+      function pingTest() {
+        $.ajax({
+          url: '/particle/ping',
+          method: 'GET',
+          dataType: 'json'
+        }).done(particleSuccess).fail(particleFailure);
+      }
+      
+      function readData() {
+        $.ajax({
+          url: '/particle/read',
+          method: 'GET',
+          dataType: 'json'
+        }).done(particleSuccess).fail(particleFailure);
+      }
+
+      function enableDisablePublish() {
+        let bPublish;
+        if ($('#btnEnablePublish').html() == 'Enable publish') bPublish = true;
+        else bPublish = false;
+        let cmd = {
+          publish: bPublish
+        };
+        console.log(JSON.stringify(cmd));
+        $.ajax({
+          url: '/particle/publish',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(cmd),
+          dataType: 'json'
+        }).done(particleSuccess).fail(particleFailure);
+      }
+      
+      function particleSuccess(data, textStatus, jqXHR) {
+        $('#cmdStatusData').html(JSON.stringify(data, null, 2));
+        if ("cmd" in data) {
+          if (data.cmd === "ping") {
+            if ("online" in data.data) {
+              if (data.data.online) {
+                $('#ping_status').val('Online');
+              }
+              else $('#ping_status').val('Offline');
+            }
+          }
+          else if (data.cmd === "read") {
+            if ("simclock" in data.data) $('#curTime').html(data.data.simclock);
+          }
+          else if ((data.cmd === "publish") && (data.success)){
+            if ($('#btnEnablePublish').html() == 'Enable publish') {
+              $('#btnEnablePublish').html('Disable publish'); 
+              myInterval = setInterval(readData, 1000);
+            }
+            else {
+              $('#btnEnablePublish').html('Enable publish');
+              if (myInterval != null) {
+                clearInterval(myInterval);
+                myInterval = null;
+              }
+            }
+          }          
+        }
+      }
+     
+      function particleFailure(jqXHR, textStatus, errorThrown) {
+        $('#cmdStatusData').html(JSON.stringify(jqXHR, null, 2));
+      }
+
+      
+
+    </script>
+  </head>
+  <body>
+    <h1>Particle cloud example</h1>
+    
+    <div class="centerDiv">
+      <div>
+        <h2 id="curTime" style="text-align: center; color:blue">Time information here</h2>
+      </div>
+      <div>
+        <button id="btnPing" onclick="pingTest()">Ping</button>
+        <label>Device status:</label>
+        <input id="ping_status" name="ping_status" style="width:600px;" readonly value="">
+      </div>
+      <br/>
+      <div>
+        <button id="btnEnablePublish" onclick="enableDisablePublish()">Enable publish</button>
+      </div>
+      <br/>
+      <div style="display:inline-block; width:99%; height: 200px;">
+        <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
+      </div>
+      
+  </div>
+  </body>
+</html>

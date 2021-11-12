@@ -20,7 +20,6 @@
 				- [ ] Door status
 				- [ ] Smart light brightness
 			- [ ] Interface to adjust brightness of smart light (i.e., manual/auto mode)
-
 	3. AWS
 		- Client side web pages (do not need to support mobile devices for this checkpoint 2)
 			- [ ] Sign-up interface 
@@ -40,7 +39,7 @@
 				- [ ] Implement your routers to communicate 1) between AWS and clients, and 2) between AWS and the registered device 
 				- [ ] Should use MongoDB for sign-up/sign-in/device registration 
 				- [ ] Should implement simulated clock
-			- [ ] SHOULD consider the following things 
+			- Should consider the following things 
 				- [ ] The device information should be managed by using your database 
 				- [ ] User information should be managed by using your database 
 				- [ ] You should use token-based authentication
@@ -60,24 +59,24 @@
 	- [ ]  Your state machines/state charts for the final implementation (PDF file)
 		- [ ]  i.e., should include all functionalities
 	- [ ]  README.txt file
-		- [ ] Team information (name, email, project level) 
-		- [ ] AWS address (i.e., URL) 
+		- [x] Team information (name, email, project level) 
+		- [x] AWS address (i.e., URL) 
 		- [ ] Your video demo information (i.e., where to watch) 
 		- [ ] Your particle device information (i.e., what are you using for your project?) 
 		- [ ] Simple description of your implementation
 			- [ ]  Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) 
 		- [ ] How to use your systems
-4. Submission
+4. Submission (Double check before submit)
 	- [ ] Please prepare the below folder structure for your submission
 	- [ ] Folder structure (where <span style="color: green;">green color</span> text represents a folder)
-		- [ ] <span style="color: green;">Particle</span>
+		- [x] <span style="color: green;">Particle</span>
 			- [ ] All your code for the particle firmware here
-		- [ ] <span style="color: green;">Localhost</span>
+		- [x] <span style="color: green;">Localhost</span>
 			- [ ] All your code for the localhost
 			- [ ] __Should **not** include package-lock.json and node_modules__ 
-		- [ ] AWS
+		- [x] <span style="color: green;">AWS</span>
 			- [ ] All your code for your AWS
-			- [ ] Should not include package-lock.json and node_modules 
+			- [ ] __Should **not** include package-lock.json and node_modules__
 		- [ ] README.txt
 		- [ ] PDF file for your state machines/state charts
 	- [ ] Submit one single zip file to D2L
