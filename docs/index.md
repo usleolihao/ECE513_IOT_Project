@@ -18,7 +18,7 @@ The innovative home application is a low-cost IoT-enabled web application for:
 
 ## Updates
 
-<iframe src="/updates.md" ></iframe>
+<iframe src="http://www.lgcyaxi.net/ECE513_IOT_Project/update.md" ></iframe>
 
 ## Overview
 
