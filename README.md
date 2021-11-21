@@ -35,7 +35,7 @@ This repertory contains files of `SMART HOME Project`.
 
 ### Response Codes
 
-Recommended HTTP response code
+[Recommended HTTP response code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
 |Code| response status          |
 |----|--------------------------|
@@ -49,6 +49,8 @@ Recommended HTTP response code
 ### API
 
 ## Instruction
+
+ece513projectgroup14
 
 ### Directory Structure
 

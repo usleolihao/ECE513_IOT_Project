@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var swig = require('swig');
 
 // Parses JSON in body
 const bodyParser = require('body-parser');
@@ -14,17 +15,27 @@ const lab_8_7 = require("./models/lab_8_7");
 // Router
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
 var lab_8_7Router = require('./routes/lab_8_7');
-
 
 // app
 var app = express();
 
+app.use(express.static('public'));
+
+
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+swig.setDefaults({
+  cache: false
+})
+app.set('view cache', false);
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'pug');
+app.set('views',path.join(__dirname, 'views'));
+app.set('view engine','html');
+app.engine('html', swig.renderFile);
+
+
 
 //enable cross-origin access
 app.use(function (req, res, next) {
@@ -53,7 +64,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // setup the router
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/lab', lab_8_7Router);
 
 
@@ -72,5 +83,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

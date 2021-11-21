@@ -1,0 +1,12 @@
+<ul class="collection with-header" id="devices">
+    <li class="collection-header">
+        <h5>Devices</h5>
+    </li>
+    <li class="collection-item" id="addDeviceForm">
+        <label for="deviceId">New Device ID:</label>
+        <input type="text" id="deviceId" name="deviceId" col="30">
+        <button id="registerDevice" class="waves-effect waves-light btn">Register</button>
+        <button id="cancel" class="waves-effect waves-light btn">Cancel</button>
+    </li>
+    <li class="collection-item" id="addDeviceControl"><a href="#!" id="addDevice">Add Device</a></li>
+</ul>
