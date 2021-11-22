@@ -58,7 +58,7 @@
 3. Documentation
 	- [ ]  Your state machines/state charts for the final implementation (PDF file)
 		- [ ]  i.e., should include all functionalities
-	- [ ]  README.txt file
+	- [ ]  README file
 		- [x] Team information (name, email, project level) 
 		- [x] AWS address (i.e., URL) 
 		- [ ] Your video demo information (i.e., where to watch) 

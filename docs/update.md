@@ -1,3 +1,12 @@
+### v1.03 11/21/2021
+
+- Signup
+	- sign.css
+	- signup.html
+	- signup.js
+- Login.html
+	- init login.js
+
 ### v1.02 11/20/2021
 
 - GitHub Pages

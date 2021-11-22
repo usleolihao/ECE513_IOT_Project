@@ -1,0 +1,59 @@
+body {
+    background: url("../images/bg2.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.main {
+    margin: 0 auto;
+    margin-top: 5vh;
+    padding: auto;
+}
+
+.main>.modal-content {
+    background-color: #d1cfee;
+    opacity: 0.6;
+    margin-top: 1vh;
+    padding: 3vh 1vw;
+}
+
+.main>.modal-content>.user-img i {
+    height: 16vh;
+    font-size: 8rem;
+    margin-top: 4vh;
+}
+
+.input-field {
+    margin-bottom: 1rem;
+    display: flex;
+}
+
+.buttons>div {
+    padding: 10px 0;
+}
+
+.verified-passed,
+.verified-failed {
+    font-size: 24pt;
+}
+
+.verified-passed {
+    color: green;
+}
+
+.verified-failed {
+    color: red;
+}
+
+#formErrors {
+    text-align: left;
+    color: red;
+}
+
+@media only screen and (min-width: 600px) {
+    .main {
+        padding: auto;
+    }
+    .main>.modal-content {
+        width: 30vw;
+    }
+}

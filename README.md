@@ -16,7 +16,6 @@ This repertory contains files of `SMART HOME Project`.
 
 ### AWS address
 
-- [init - Port 3000](http://ec2-54-151-67-43.us-west-1.compute.amazonaws.com:3000/)
 - [http - Port 80](http://ec2-54-151-67-43.us-west-1.compute.amazonaws.com/)
 - [https - Port 443](https://ec2-54-151-67-43.us-west-1.compute.amazonaws.com/)
 
@@ -49,8 +48,6 @@ This repertory contains files of `SMART HOME Project`.
 ### API
 
 ## Instruction
-
-ece513projectgroup14
 
 ### Directory Structure
 

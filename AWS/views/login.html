@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="stylesheets/sign.css">
-<script src="javascripts/signup.js"></script>
+<script src="javascripts/login.js"></script>
 {% endblock %}
 {% block navbar %}
 <li class="nav-item">
@@ -33,13 +33,9 @@
         <div class="modal-content">
             <div class="col-12 user-img">
                 <i class="fas fa-user"></i>
-                <h4>User Registration</h4>
+                <h4>User Portal</h4>
             </div>
             <div class="col-12">
-                <div class="input-field">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName">
-                </div>
                 <div class="input-field">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email">
@@ -48,22 +44,15 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password">
                 </div>
-                <div class="input-field">
-                    <label for="passwordConfirm">Confirm Password</label>
-                    <input type="password" id="passwordConfirm" name="passwordConfirm">
-                </div>
                 <div class="card-panel" id="formErrors" style="display: none">
                     <ul id="errorlist">
 
                     </ul>
                 </div>
                 <div class="buttons">
-                    <div><a id="signup" class="waves-effect waves-light blue btn white-text">Sign up</a></div>
+                    <div><a id="login" class="waves-effect waves-light blue btn white-text">Login</a></div>
                 </div>
             </div>
-        </div>
-        <div class="modal-content">
-            <div id="account">Have an account? <a href="login">Log in</a></div>
         </div>
     </div>
 </div>

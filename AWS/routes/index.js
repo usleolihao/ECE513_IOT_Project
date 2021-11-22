@@ -9,6 +9,10 @@ router.get('/',function(req, res, next){
     });
 })
 
+/*
+res.sendFile('/dashboard.html');
+*/
+
 /* Signup page. */
 router.get('/signup',function(req, res, next){
     res.render('signup',{
@@ -16,8 +20,10 @@ router.get('/signup',function(req, res, next){
     })
 })
 
-/*
-res.sendFile('/dashboard.html');
-*/
+router.get('/login',function(req, res, next){
+    res.render('login',{
+        title:'Login - SmartHome'
+    })
+})
 
 module.exports = router;

@@ -33,7 +33,7 @@ The innovative home application is a low-cost IoT-enabled web application for:
 
 ## Updates
 
-{% include_relative update.md max-height="200vh" %}
+{% include_relative update.md max-height="50vh" %}
 
 ## Overview
 
