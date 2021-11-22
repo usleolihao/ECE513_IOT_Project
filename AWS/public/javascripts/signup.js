@@ -64,7 +64,7 @@ function checkForm() {
     }
 
     // email field check
-    if ( emailRegex.text( email.value ) ) {
+    if ( !emailRegex.test( email.value ) ) {
         ul.appendChild( create_li( "Invalid or missing email address." ) );
         error = true;
     }
@@ -82,19 +82,19 @@ function checkForm() {
     }
 
     // password field check for lowercase letter
-    if ( lowerRegex.test( password.value ) ) {
+    if ( !lowerRegex.test( password.value ) ) {
         ul.appendChild( create_li( "Password must contain at least one lowercase character." ) );
         error = true;
     }
 
     // password field check for uppercase letter
-    if ( upperRegex.test( password.value ) ) {
+    if ( !upperRegex.test( password.value ) ) {
         ul.appendChild( create_li( "Password must contain at least one uppercase character." ) );
         error = true;
     }
 
     // password field check for numbers
-    if ( digitRegex.test( password.value ) ) {
+    if ( !digitRegex.test( password.value ) ) {
         ul.appendChild( create_li( "Password must contain at least one digit." ) );
         error = true;
     }
