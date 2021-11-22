@@ -3,9 +3,9 @@
 const namelengthmin = 2;
 const passwordmin = 8;
 const passwordmax = 20;
-const passwordlower = 1;
-const passwordupper = 1;
-const passwordnum = 1;
+const lowerRegex = /^(?=.*[a-z])/;
+const upperRegex = /^(?=.*[A-Z])/;
+const digitRegex = /[\d]{1}/;
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 // Validation -------------------------------------------------------------------------
@@ -37,6 +37,14 @@ function checkForm() {
         return li;
     }
 
+    function lowercount( string ) {
+        return string.match( /[a-z]/g ).length
+    }
+
+    function uppercount( string ) {
+        return string.match( /[a-z]/g ).length
+    }
+
     // storing input tags into variables
     var name = document.getElementById( "fullName" );
     var email = document.getElementById( "email" );
@@ -56,7 +64,7 @@ function checkForm() {
     }
 
     // email field check
-    if ( !email.value.match( emailRegex ) ) {
+    if ( emailRegex.text( email.value ) ) {
         ul.appendChild( create_li( "Invalid or missing email address." ) );
         error = true;
     }
@@ -74,20 +82,20 @@ function checkForm() {
     }
 
     // password field check for lowercase letter
-    if ( password.value.search( /[^a-z]/g ) < passwordlower ) {
-        ul.appendChild( create_li( "Password must contain at least " + passwordlower + " lowercase character." ) );
+    if ( lowerRegex.test( password.value ) ) {
+        ul.appendChild( create_li( "Password must contain at least one lowercase character." ) );
         error = true;
     }
 
     // password field check for uppercase letter
-    if ( password.value.search( /[^A-Z]/g ) < passwordupper ) {
-        ul.appendChild( create_li( "Password must contain at least " + passwordupper + " uppercase character." ) );
+    if ( upperRegex.test( password.value ) ) {
+        ul.appendChild( create_li( "Password must contain at least one uppercase character." ) );
         error = true;
     }
 
     // password field check for numbers
-    if ( password.value.search( /[0-9]/i ) < passwordnum ) {
-        ul.appendChild( create_li( "Password must contain at least " + passwordnum + " digit." ) );
+    if ( digitRegex.test( password.value ) ) {
+        ul.appendChild( create_li( "Password must contain at least one digit." ) );
         error = true;
     }
 
