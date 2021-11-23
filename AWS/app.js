@@ -8,14 +8,13 @@ var swig = require('swig');
 // Parses JSON in body
 const bodyParser = require('body-parser');
 
-// for mongDB
-const lab_8_7 = require("./models/lab_8_7");
+// Models
+const lab_8_7 = require("./models/user");
 
 
 // Router
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var lab_8_7Router = require('./routes/lab_8_7');
 
 // app
 var app = express();
@@ -55,7 +54,6 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -65,7 +63,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // setup the router
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-app.use('/lab', lab_8_7Router);
 
 
 // catch 404 and forward to error handler

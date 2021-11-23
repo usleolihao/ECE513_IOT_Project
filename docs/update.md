@@ -1,3 +1,26 @@
+### v1.04 11/22/2021
+
+- Account Creation and Management
+	- [x] Access to the web application should be controlled using token based authentication
+	- [x] User create an account by using an email as the username and a strong password
+	- Client site
+		- [x] Sign-up interface 
+			- signup.js
+		- [x] Sign-in interface
+			- login.js
+		- account.html/js
+			- [x] review information
+			- A user should be able to update any of their account information, except email
+				- [x] A user should be able to add their location using a zip code
+	- Between AWS and clients 
+		- [x] use MongoDB for sign-up/sign-in/device registration 
+	- Server site: Implement routers to communicate 
+		- [x] user/signup
+		- [x] user/login
+		- user/update
+			- [x] updatezip
+- Removed unnecessary files
+
 ### v1.03 11/21/2021
 
 - Signup

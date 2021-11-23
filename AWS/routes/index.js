@@ -26,4 +26,10 @@ router.get('/login',function(req, res, next){
     })
 })
 
+router.get('/account',function(req, res, next){
+    res.render('account',{
+        title:'Account - SmartHome'
+    })
+})
+
 module.exports = router;

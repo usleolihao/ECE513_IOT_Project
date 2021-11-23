@@ -22,8 +22,8 @@
 			- [ ] Interface to adjust brightness of smart light (i.e., manual/auto mode)
 	3. AWS
 		- Client side web pages (do not need to support mobile devices for this checkpoint 2)
-			- [ ] Sign-up interface 
-			- [ ] Sign-in interface 
+			- [x] Sign-up interface 
+			- [x] Sign-in interface 
 			- [ ] Device registration interface
 				- After “sign-in”, a user can register a particle device
 				- Use case
