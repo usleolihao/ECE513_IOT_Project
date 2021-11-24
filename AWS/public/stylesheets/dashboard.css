@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+.centerDiv {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -20%);
+    border: 1px solid red;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+td,
+th {
+    height: 35px;
+    text-align: center;
+}
+
+th {
+    background-color: lightskyblue;
+}

@@ -1,0 +1,69 @@
+/* on off switch (https://proto.io/freebies/onoff/)*/
+
+.toggleswitch {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.toggleswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.toggleswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.toggleswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.toggleswitch-inner:before, .toggleswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.toggleswitch-inner:before {
+    
+    padding-left: 10px;
+    background-color: #34A7C1; color: #FFFFFF;
+}
+.toggleswitch-inner:after {
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.toggleswitch-switch {
+    display: block; width: 18px; margin: 6px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 56px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+.toggleswitch-checkbox:checked + .toggleswitch-label .toggleswitch-inner {
+    margin-left: 0;
+}
+.toggleswitch-checkbox:checked + .toggleswitch-label .toggleswitch-switch {
+    right: 0px; 
+}
+
+
+/* text for onoff switch */
+.onoffSwitchText:before {
+    content: "ON";
+    text-align: left;
+}
+
+.onoffSwitchText:after {
+    content: "OFF";
+}
+
+/* text for manual/auto mode switch */
+.manualAutoSwitchText:before {
+    content: "Auto";
+    text-align: left;
+}
+
+.manualAutoSwitchText:after {
+    content: "Manual";
+}

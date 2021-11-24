@@ -6,27 +6,7 @@ const passwordmax = 20;
 const lowerRegex = /^(?=.*[a-z])/;
 const upperRegex = /^(?=.*[A-Z])/;
 const digitRegex = /[\d]{1}/;
-const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-// Validation -------------------------------------------------------------------------
-function namevalidation() {
-    let name = $( '#fullName' );
-    if ( name.val().length < namelengthmin ) {
-        failed( name );
-    } else {
-        passed( name );
-    }
-}
-
-function emailvalidation() {
-    let email = $( '#email' );
-    if ( !email.val().match( emailRegex ) ) {
-        failed( email );
-    } else {
-        passed( email );
-    }
-}
-
+const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 // function for form validation
 function checkForm() {
@@ -117,6 +97,25 @@ function checkForm() {
     return error;
 }
 
+// Validation -------------------------------------------------------------------------
+function namevalidation() {
+    let name = $( '#fullName' );
+    if ( name.val().length < namelengthmin ) {
+        failed( name );
+    } else {
+        passed( name );
+    }
+}
+
+function emailvalidation() {
+    let email = $( '#email' );
+    if ( !email.val().match( emailRegex ) ) {
+        failed( email );
+    } else {
+        passed( email );
+    }
+}
+
 function newuser() {
     if ( !checkForm() ) {
         register();
@@ -141,6 +140,8 @@ function register() {
 
 function registerSuccess( data, textStatus, jqXHR ) {
     if ( data.success ) {
+        alert( "Your account has been created successfully!" );
+        localStorage.clear();
         window.location = "login";
     } else {
         $( '#formErrors' ).html( "<span class='red-text text-darken-2'>Error: " + data.message + "</span>" );

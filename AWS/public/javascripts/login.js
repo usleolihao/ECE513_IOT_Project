@@ -1,7 +1,11 @@
 $().ready( function () {
     if ( window.localStorage.getItem( "authToken" ) ) {
-        //alert( "found login cache" )
-        window.location = "account";
+        let panel = window.localStorage.getItem( "dashboard" );
+        if ( panel === "true" ) {
+            window.location = "dashboard";
+        } else {
+            window.location = "account";
+        }
     }
 
     $( '#login' ).click( authentication );
@@ -22,10 +26,15 @@ function authentication() {
             dataType: 'json'
         } )
         .done( function ( data, testStatus, jqXHR ) {
-            console.log( data.token );
+            //console.log( data.dashboard );
             window.localStorage.setItem( 'authToken', data.token );
+            window.localStorage.setItem( 'dashboard', data.dashboard );
             alert( "login Successful" );
-            window.location = "account";
+            if ( data.dashboard ) {
+                window.location = "dashboard";
+            } else {
+                window.location = "account";
+            }
         } )
         .fail( function ( jqXHR, testStatus, errorThrown ) {
             if ( jqXHR.status == 401 ) {

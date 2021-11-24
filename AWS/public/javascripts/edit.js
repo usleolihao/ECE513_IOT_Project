@@ -9,56 +9,82 @@ const digitRegex = /[\d]{1}/;
 const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 
+function deleteAccout() {
+    if ( $( '#cpassword' ).val() === '' ) {
+        alert( "Please input your Current Password for deleting account. " )
+    } else {
+        $.ajax( {
+                url: '/user/deleteaccount',
+                method: 'POST',
+                contentType: 'application/json',
+                headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
+                data: JSON.stringify( {
+                    password: $( '#cpassword' ).val()
+                } ),
+                dataType: 'json'
+            } )
+            .done( function ( data, textStatus, jqXHR ) {
+                localStorage.clear();
+                alert( data.message );
+                window.location = '/';
+            } )
+            .fail( function ( data, textStatus, jqXHR ) {
+                alert( "failed to delete account, Please check your password." );
+            } );
+    }
 
-// register a specified device
-function registerDevice() {
-    $.ajax( {
-            url: '/devices/register',
-            method: 'POST',
-            headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
-            contentType: 'application/json',
-            data: JSON.stringify( { deviceId: $( "#deviceId" ).val() } ),
-            dataType: 'json'
-        } )
-        .done( function ( data, textStatus, jqXHR ) {
-            // Add new device to the device list
-            $( "#addDeviceForm" ).before( `<li class='collection-item ${$("#deviceId").val()}-li'>ID: ` +
-                $( "#deviceId" ).val() + ", APIKEY: " + data[ "apikey" ] + "</li>" );
-
-            hideAddDeviceForm();
-        } )
-        .fail( function ( jqXHR, textStatus, errorThrown ) {
-            let response = JSON.parse( jqXHR.responseText );
-            $( "#error" ).html( "Error: " + response.message );
-            $( "#error" ).show();
-        } );
 }
-// delete device
 
 
+function updateall() {
+    // if password is empty, just change other info
+    // othewise check the password
+    if ( $( '#cpassword' ).val() === '' ) {
+        console.log( "Updates General Account Information" );
+        updateinfo( 0 );
+    } else if ( !checkPassword() ) {
+        console.log( "Updates Account Information and Password" );
+        updateinfo( 1 );
+    }
+}
 
+function updateinfo( updatetype ) {
+    console.log( "Updates Account Information" );
+    let updateinfo = {
+        fullName: $( '#fullName' ).val(),
+        zip: $( '#zip' ).val(),
+        dashboard: $( '#dashboard' ).is( ':checked' )
+    }
+    if ( updatetype === 1 ) {
+        updateinfo[ 'cpassword' ] = $( '#cpassword' ).val();
+        updateinfo[ 'password' ] = $( '#password' ).val();
+    }
 
-//update preference
-function updatePreference() {
-    console.log( "Updates Preference" + $( '#dashboard' ).is( ':checked' ) );
     $.ajax( {
-            url: '/user/updatepreference',
+            url: '/user/updateall',
             method: 'POST',
             contentType: 'application/json',
             headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
-            data: JSON.stringify( {
-                dashboard: $( '#dashboard' ).is( ':checked' )
-            } ),
+            data: JSON.stringify( updateinfo ),
             dataType: 'json'
         } )
         .done( function ( data, textStatus, jqXHR ) {
-            alert( "successfully updated Preference panel. \n You will rediret to Preference panel after login." );
-            window.localStorage.setItem( 'dashboard', data.dashboard );
+            //alert( "successfully updated account information." );
+            alert( data.message );
+            $( '#cpassword' ).val( '' );
+            $( '#password' ).val( '' );
+            $( '#passwordConfirm' ).val( '' );
         } )
         .fail( function ( data, textStatus, jqXHR ) {
-            alert( "failed to update Preference panel, Please contact customer." );
+            $( '#formErrors' ).show();
+            if ( !typeof data.responseJSON.message === 'undefined' ) {
+                $( '#formErrors' ).html( data.responseJSON.message );
+                alert( textStatus );
+            }
+            //alert( "failed to update account information, Please contact customer." );
         } );
 }
+
 
 // Load the information when user login
 function Loadinfo() {
@@ -72,15 +98,16 @@ function Loadinfo() {
         .done( function ( userinfo, textStatus, jqXHR ) {
             console.log( "Loading information" );
             $( '#email' ).html( userinfo.email );
-            $( '#fullName' ).html( userinfo.fullName );
-            $( '#lastAccess' ).html( moment( userinfo.lastAccess ).format( " MM/DD/YYYY HH:mm:ss" ) );
-            $( '#zip' ).html( userinfo.zip );
+            $( '#fullName' ).val( userinfo.fullName );
+            $( "label[for='fullName']" ).addClass( "active" );
+            $( '#zip' ).val( userinfo.zip );
+            $( "label[for='zip']" ).addClass( "active" );
             if ( userinfo.dashboard ) {
                 $( '#dashboard' ).attr( 'checked', 'checked' );
             } else {
                 $( '#account' ).attr( 'checked', 'checked' );
             }
-            initZip( userinfo.zip );
+            $( '#lastAccess' ).html( moment( userinfo.lastAccess ).format( " MM/DD/YYYY HH:mm:ss" ) );
         } )
         .fail( function ( jqXHR, textStatus, errorThrown ) {
             //remove stored token from web browser and redirect to login page
@@ -94,55 +121,8 @@ function Loadinfo() {
         } );
 }
 
-function updateZip( zipcode ) {
-    console.log( "Updates zipcode" );
-    $.ajax( {
-            url: '/user/updatezip',
-            method: 'POST',
-            contentType: 'application/json',
-            headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
-            data: JSON.stringify( {
-                zip: zipcode
-            } ),
-            dataType: 'json'
-        } )
-        .done( function ( data, textStatus, jqXHR ) {
-            alert( "successfully updated zipcode." );
-            $( '#zip' ).html( zipcode );
-        } )
-        .fail( function ( data, textStatus, jqXHR ) {
-            alert( "failed to update zipcode, Please contact customer." );
-        } );
-
-}
-
-function initZip( zip ) {
-    if ( zip == '00000' ) {
-        console.log( "Please input your zip for enable weather" );
-        let zipcode = prompt( "Please input your zipcode for enable weather service" );
-
-        while ( !isValidUSZip( zipcode ) ) {
-            zipcode = prompt( "Please input correct zipcode for enable weather service" );
-        }
-
-        updateZip( zipcode );
-
-    }
-}
-
-function isValidUSZip( sZip ) {
-    return /^\d{5}(-\d{4})?$/.test( sZip );
-}
-
-function logout() {
-    if ( confirm( "Are you sure to logout?" ) ) {
-        localStorage.removeItem( "authToken" );
-        window.location = "/";
-    }
-}
-
 // function for form validation
-function checkForm() {
+function checkPassword() {
 
     function create_li( title ) {
         var li = document.createElement( "li" );
@@ -150,17 +130,8 @@ function checkForm() {
         ul.appendChild( li );
     }
 
-    function lowercount( string ) {
-        return string.match( /[a-z]/g ).length
-    }
-
-    function uppercount( string ) {
-        return string.match( /[a-z]/g ).length
-    }
-
     // storing input tags into variables
     var name = document.getElementById( "fullName" );
-    var email = document.getElementById( "email" );
     var password = document.getElementById( "password" );
     var confirmPassword = document.getElementById( "passwordConfirm" );
     var error = false;
@@ -176,12 +147,6 @@ function checkForm() {
     // name field length check
     if ( name.value.length < 1 ) {
         create_li( "Missing full name." );
-        error = true;
-    }
-
-    // email field check
-    if ( !emailRegex.test( email.value ) ) {
-        create_li( "Invalid or missing email address." );
         error = true;
     }
 
@@ -230,15 +195,19 @@ function checkForm() {
     return error;
 }
 
+function logout() {
+    if ( confirm( "Are you sure to logout?" ) ) {
+        localStorage.removeItem( "authToken" );
+        window.location = "/";
+    }
+}
+
 $().ready( function () {
     $( '#logoutbtn' ).click( logout );
     Loadinfo();
-    $( "input[name=dashboard]" ).click( updatePreference );
-    $( "#updateAccInfoBtn" ).click( function () {
-        window.location.replace( "edit" );
+    $( "#toaccount" ).click( function () {
+        window.location.replace( "account" );
     } );
-    $( "#devicesBtn" ).click( function () {
-        window.location.replace( "devices" );
-    } );
-    $( "#registerDevice" ).click( registerDevice );
+    $( '#edit' ).click( updateall );
+    $( '#deleteaccount' ).click( deleteAccout );
 } );

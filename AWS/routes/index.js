@@ -32,4 +32,22 @@ router.get('/account',function(req, res, next){
     })
 })
 
+router.get('/dashboard',function(req, res, next){
+    res.render('dashboard',{
+        title:'Dashboard - SmartHome'
+    })
+})
+
+router.get('/edit',function(req, res, next){
+    res.render('editinfo',{
+        title:'Edit Account Information - SmartHome'
+    })
+})
+
+router.get('/devices',function(req, res, next){
+    res.render('devices',{
+        title:'Device List - SmartHome'
+    })
+})
+
 module.exports = router;

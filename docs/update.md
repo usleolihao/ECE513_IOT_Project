@@ -1,3 +1,29 @@
+### v1.06 11/24/2021
+
+- Account Creation and Management
+	- account.html/js
+		- [ ] A user should be able to update any of their account information, except email
+			- [ ] register at least one device with their account
+		- [ ] Device registration interface
+			- [ ] A user should be able to add and remove devices (e.g., device ID and API key) in his/her account
+			- [ ] A user should be able to have more than one device
+	- [ ] Server site: Implement routers to communicate 
+		- [ ] device/add
+		- [ ] device/delete
+
+### v1.05 11/23/2021
+
+- Account Creation and Management
+	- account.html/js
+		- A user should be able to update any of their account information, except email
+			- [x] update information
+			- [x] delete account
+			- [x] User are able to change Preference panel after Login
+			- [x] clear Localstorage after register account
+	- Server site: Implement routers to communicate 
+		- [x] user/update
+		- [x] user/delete
+
 ### v1.04 11/22/2021
 
 - Account Creation and Management
