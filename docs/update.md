@@ -2,14 +2,17 @@
 
 - Account Creation and Management
 	- account.html/js
-		- [ ] A user should be able to update any of their account information, except email
-			- [ ] register at least one device with their account
-		- [ ] Device registration interface
-			- [ ] A user should be able to add and remove devices (e.g., device ID and API key) in his/her account
-			- [ ] A user should be able to have more than one device
-	- [ ] Server site: Implement routers to communicate 
-		- [ ] device/add
-		- [ ] device/delete
+		- [x] A user should be able to update any of their account information, except email
+			- [x] register at least one device with their account
+			- [x] list registered devices
+		- [x] Device registration interface
+			- [x] A user should be able to add and 
+			- [x] remove devices (e.g., device ID and API key) in his/her account
+			- [x] remove device from the list
+			- [x] A user should be able to have more than one device
+	- [x] Server site: Implement routers to communicate 
+		- [x] device/add
+		- [x] device/delete
 
 ### v1.05 11/23/2021
 

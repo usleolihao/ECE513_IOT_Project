@@ -10,7 +10,7 @@ const bodyParser = require( 'body-parser' );
 
 // Models
 const User = require( "./models/user" );
-
+const Device = require( "./models/device" );
 
 // Router
 var indexRouter = require( './routes/index' );
