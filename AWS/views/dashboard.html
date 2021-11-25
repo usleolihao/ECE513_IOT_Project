@@ -12,18 +12,24 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <!-- Moment -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
-<script src="javascripts/dashboard.js"></script>
-<script src="javascripts/rangeslider.min.js"></script>
+<!-- main css -->
 <link rel="stylesheet" href="stylesheets/dashboard.css">
 <link rel="stylesheet" href="stylesheets/switch.css">
 <link rel="stylesheet" href="stylesheets/rangeslider.css">
+<!-- Helper function -->
+<script src="javascripts/common.js"></script>
+<script src="javascripts/rangeslider.min.js"></script>
+<!-- main script -->
+<script src="javascripts/dashboard.js"></script>
+<script src="javascripts/onlinecomm.js"></script>
+<script src="javascripts/localcomm.js"></script>
 {% endblock %}
 {% block navbar %}
 <li class="nav-item">
     <a class="nav-link" aria-current="page" href="account">Account</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" aria-current="page"  href="#" aria-disabled="true">Dashboard</a>
+    <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Dashboard</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" aria-current="page" href="devices">Devices</a>
@@ -36,97 +42,124 @@
 </li>
 {% endblock %}
 {% block content %}
-<h1>Controller GUI</h1>
-<div class="centerDiv">
-    <table>
-        <tr>
-            <td colspan="4"><span id="curTime"></span></td>
-        </tr>
-        <tr>
-            <th colspan="4">Serial Comm. </th>
-        </tr>
-        <tr>
-            <td>
-                <select id="com_ports_list">
-                    <option selected value="null">Please select your port</option>
-                </select>
-            </td>
-            <td>
-                <button id="btnConnect" onclick="connectDisconnect()">Connect</button>
-            </td>
-            <td>COM status:</td>
-            <td>
-                <input id="com_status" name="com_status" style="width:600px;" readonly value="">
-            </td>
-        </tr>
-    </table>
-    <br />
-    <table>
-        <tr>
-            <th colspan="4">Smart Light</th>
-        </tr>
-        <tr>
-            <td>
-                <div class="toggleswitch">
-                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightonoff" onchange="smartLightControl('on', this.checked)">
-                    <label class="toggleswitch-label" for="smartlightonoff">
-                        <span class="toggleswitch-inner onoffSwitchText"></span>
-                        <span class="toggleswitch-switch"></span>
-                    </label>
-                </div>
-            </td>
-            <td>
-                <div class="toggleswitch">
-                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightMode" onchange="smartLightControl('auto', this.checked)">
-                    <label class="toggleswitch-label" for="smartlightMode">
-                        <span class="toggleswitch-inner manualAutoSwitchText"></span>
-                        <span class="toggleswitch-switch"></span>
-                    </label>
-                </div>
-            </td>
-            <td>Brightness:</td>
-            <td colspan="3">
+<div class="modal-center centerDiv">
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h4>Dashboard</h4>
+        </li>
+        <li class="collection-item">
+            <span id="curTime"></span>
+        </li>
+        <li class="collection-item">
+            <span>Online Communication</span>
+            <select id="online_device_list">
+                <option selected value="null">Please select your Online Device</option>
+            </select>
+            <button class="waves-effect waves-light btn" id="onlineping">Ping</button>
+        </li>
+        <li class="collection-item">
+            <span>Online Publish</span>
+            <div class="toggleswitch">
+                <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="publishonoff">
+                <label class="toggleswitch-label" for="publishonoff">
+                    <span class="toggleswitch-inner onoffSwitchText"></span>
+                    <span class="toggleswitch-switch"></span>
+                </label>
+            </div>
+        </li>
+        <li class="collection-item">
+            <span>Online status:</span>
+            <div style="display:inline-block; width:100%; height: 3rem;">
+                <textarea id="online_com_status" name="online_com_status" style="width:100%;height:100%" readonly value=""></textarea>
+            </div>
+        </li>
+        <li class="collection-item">
+            <span>Local Serial Communication</span>
+            <select id="com_ports_list">
+                <option selected value="null">Please select your port</option>
+            </select>
+            <button class="waves-effect waves-light btn" id="btnConnect">Connect</button>
+        </li>
+        <li class="collection-item">
+            <span>COM status:</span>
+            <div style="display:inline-block; width:100%; height: 3rem;">
+                <textarea id="com_status" name="com_status" style="width:100%;height:100%" readonly value=""></textarea>
+            </div>
+        </li>
+    </ul>
+    <ul class="collection with-header">
+        <li class="collection-header" style="background-color:linen;">
+            <h5>Smart Light</h5>
+        </li>
+        <li class="collection-item smartlightpanel">
+            <div class="toggleswitch">
+                <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightonoff" onchange="smartLightControl('on', this.checked)">
+                <label class="toggleswitch-label" for="smartlightonoff">
+                    <span class="toggleswitch-inner onoffSwitchText"></span>
+                    <span class="toggleswitch-switch"></span>
+                </label>
+            </div>
+            <div class="toggleswitch">
+                <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightMode" onchange="smartLightControl('auto', this.checked)">
+                <label class="toggleswitch-label" for="smartlightMode">
+                    <span class="toggleswitch-inner manualAutoSwitchText"></span>
+                    <span class="toggleswitch-switch"></span>
+                </label>
+            </div>
+        </li>
+        <li class="collection-item">
+            <span>Brightness:</span>
+            <div class="slideroffsets">
                 <input id="birghtnessSlider" type="range" min="0" max="100" step="1" value="0" onchange="smartLightControl('brightness', this.value)">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4" style="background-color:linen;">Sensor setting</td>
-        </tr>
-        <tr>
-            <td>Sensor min:</td>
-            <td>
+            </div>
+        </li>
+        <li class="collection-item" style="background-color:linen;">
+            <span>Sensor setting</span>
+        </li>
+        <li class="collection-item">
+            <span>Sensor min:</span>
+            <div class="slideroffsets">
                 <input id="sensorMinSlider" type="range" min="0" max="4095" step="1" value="500" onchange="smartLightControl('min', this.value)">
-            </td>
-            <td>Sensor max:</td>
-            <td>
+            </div>
+            <span>Sensor max:</span>
+            <div class="slideroffsets">
                 <input id="sensorMaxSlider" type="range" min="0" max="4095" step="1" value="2500" onchange="smartLightControl('max', this.value)">
-            </td>
-        </tr>
-        <tr>
-            <td>Sensor Val:</td>
-            <td><span id="sensorVal"></span></td>
-            <td>Present brightness:</td>
-            <td>
-                <div id="curBrightness" style="width: 100%; height:100%;"></div>
-            </td>
-        </tr>
-    </table>
-    <br />
-    <table>
-        <tr>
-            <th colspan="2">LED (D7) blinking</th>
-        </tr>
-        <tr>
-            <td>Hz:</td>
-            <td><input id="ledHzSlider" type="range" min="1" max="10" step="1" value="1" onchange="toggleLedControl(this.value)"></td>
-        </tr>
-    </table>
-    <br />
-    <div style="display:inline-block; width:49%; height: 200px;">
-        <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
-    </div>
-    <div style="display:inline-block; width:49%; height: 200px;">
-        <textarea id="rdData" style="width:100%; height:100%"></textarea>
-    </div>
+            </div>
+            <span>Sensor Val:</span>
+            <span id="sensorVal"></span>
+            <br>
+            <span>Present brightness:</span>
+            <div id="curBrightness" style="width: 100%; height:100%;"></div>
+        </li>
+    </ul>
+    <ul class="collection with-header">
+        <li class="collection-header" style="background-color:linen;">
+            <h5>LED (D7) blinking</h5>
+        </li>
+        <li class="collection-item">
+            <span>Hz:</span>
+            <div class="slideroffsets">
+                <input id="ledHzSlider" type="range" min="1" max="10" step="1" value="1" onchange="toggleLedControl(this.value)">
+            </div>
+        </li>
+    </ul>
+    <ul class="collection with-header">
+        <li class="collection-header" style="background-color:linen;">
+            <h5>CMD Status Data Output</h5>
+        </li>
+        <li class="collection-item">
+            <div style="display:inline-block; width:100%; height: 20rem;">
+                <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
+            </div>
+        </li>
+        <li class="collection-header" style="background-color:linen;">
+            <h5>RD Data Output</h5>
+        </li>
+        <li class="collection-item">
+            <div style="display:inline-block; width:100%; height: 20rem;">
+                <textarea id="rdData" style="width:100%; height:100%"></textarea>
+            </div>
+        </li>
+    </ul>
 </div>
 {% endblock %}

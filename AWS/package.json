@@ -19,6 +19,7 @@
     "mongoose": "^6.0.11",
     "morgan": "~1.9.1",
     "pug": "^3.0.2",
+    "serialport": "^9.2.7",
     "superagent": "^6.1.0",
     "swig": "^1.4.2"
   }

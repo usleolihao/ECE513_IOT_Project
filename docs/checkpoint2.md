@@ -24,11 +24,11 @@
 		- Client side web pages (do not need to support mobile devices for this checkpoint 2)
 			- [x] Sign-up interface 
 			- [x] Sign-in interface 
-			- [ ] Device registration interface
+			- [x] Device registration interface
 				- After “sign-in”, a user can register a particle device
 				- Use case
-					- [ ] A user already has “device name”, “device ID”, and “access-token”.
-					- [ ] A user can register a device using the above information
+					- [x] A user already has “device name”, “device ID”, and “access-token”.
+					- [x] A user can register a device using the above information
 					- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
 			- [ ] A visualization/control interface
 				- [ ]  A user can issue a “ping” command to check whether the registered device is online or offline
@@ -37,12 +37,12 @@
 					- [ ]  Minimum requirements: By clicking a button, a user can see received data 
 			- [ ] Server side 
 				- [ ] Implement your routers to communicate 1) between AWS and clients, and 2) between AWS and the registered device 
-				- [ ] Should use MongoDB for sign-up/sign-in/device registration 
-				- [ ] Should implement simulated clock
+				- [x] Should use MongoDB for sign-up/sign-in/device registration 
+				- [x] Should implement simulated clock
 			- Should consider the following things 
-				- [ ] The device information should be managed by using your database 
-				- [ ] User information should be managed by using your database 
-				- [ ] You should use token-based authentication
+				- [x] The device information should be managed by using your database 
+				- [x] User information should be managed by using your database 
+				- [x] You should use token-based authentication
 2. Video demonstration
 	- [ ] Short video demo to show your implementation (10 minutes maximum)
 	- [ ] Should either be hosted on your server or hosted on some other publicly accessible service (e.g., YouTube)

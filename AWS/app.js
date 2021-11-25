@@ -16,7 +16,8 @@ const Device = require( "./models/device" );
 var indexRouter = require( './routes/index' );
 var usersRouter = require( './routes/users' );
 var deviceRouter = require( './routes/devices' );
-
+var serialRouter = require( './routes/serialcomm' );
+var cloudRouter = require( './routes/cloud' );
 
 // app
 var app = express();
@@ -66,6 +67,9 @@ app.use( express.static( path.join( __dirname, 'public' ) ) );
 app.use( '/', indexRouter );
 app.use( '/user', usersRouter );
 app.use( '/device', deviceRouter );
+app.use( '/serial', serialRouter );
+app.use( '/cloud', cloudRouter );
+
 
 // catch 404 and forward to error handler
 app.use( function ( req, res, next ) {
