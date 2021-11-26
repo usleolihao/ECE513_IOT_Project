@@ -1,3 +1,6 @@
+var OnlineInterval = null;
+
+
 function updateAvailableDevicelList( data ) {
     for ( let device in data ) {
         let deviceid = data[ device ].deviceid;
@@ -57,7 +60,25 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             let msg = `Device is ${data.success && data.data.online ? "Online":"Offline"}`;
             $( '#online_com_status' ).html( msg );
         } else if ( data.cmd === "publish" ) {
-            let msg = `Device published ${data.success ? "successful":"fail"}`;
+            //console.log( data );
+            let msg = "";
+            if ( data.status ) {
+                msg = `Device published ${data.success ? "successful":"fail"}`;
+                if ( data.success ) {
+                    OnlineInterval = setInterval( function () {
+                        onlineCmd( { cmd: "read" } );
+                    }, 1000 );
+                }
+            } else {
+                msg = `Device disabled publish ${data.success ? "successful":"fail"}`;
+                if ( data.success ) {
+                    if ( OnlineInterval != null ) {
+                        clearInterval( OnlineInterval );
+                        OnlineInterval = null;
+                    }
+                }
+            }
+
             $( '#online_com_status' ).html( msg );
         }
         //else if ( data.cmd === "open" ) finishOpenClose( data );
@@ -68,7 +89,7 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             $( '#rdData' ).html( curStr );
             document.getElementById( "rdData" ).scrollTop = document.getElementById( "rdData" ).scrollHeight;
             // update GUI
-            //updateGUI( data.data );
+            updateGUI( data.data );
         } else {
             $( '#online_com_status' ).html( JSON.stringify( data, null, 2 ) );
         }

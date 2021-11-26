@@ -34,9 +34,9 @@ router.post( '/ping', function ( req, res ) {
         } );
 } );
 
-router.get( '/read', function ( req, res ) {
+router.post( '/read', function ( req, res ) {
     let retData = rxData;
-    if ( simulatedTime ) retData[ "simclock" ] = simulatedTime.toString();
+    if ( simulatedTime ) retData[ "simclockOnline" ] = simulatedTime.toString();
     res.status( 201 ).json( { cmd: 'read', data: retData } );
 } );
 
@@ -46,16 +46,17 @@ router.post( '/report', function ( req, res ) {
     res.status( 201 ).json( { status: 'ok' } );
 } );
 
+
 router.post( '/publish', function ( req, res ) {
-    //console.log( req.body );
+    //console.log( req.body.publish );
     request
         .post( "https://api.particle.io/v1/devices/" + req.body.deviceid + "/cloudcmd" )
         .set( 'Authorization', 'Bearer ' + req.body.deviceapi )
         .set( 'Accept', 'application/json' )
         .set( 'Content-Type', 'application/json' )
-        .send( { args: JSON.stringify( req.body ) } )
+        .send( { args: JSON.stringify( req.body.publish ) } )
         .then( response => {
-            res.status( 200 ).json( { cmd: 'publish', success: true } );
+            res.status( 200 ).json( { cmd: 'publish', success: true, status: req.body.publish.publish } );
         } )
         .catch( err => {
             res.status( 201 ).json( { cmd: 'publish', success: false } );

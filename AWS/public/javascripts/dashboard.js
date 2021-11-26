@@ -25,7 +25,7 @@ $( function () {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // automatic update time by seconds
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    datetime = $( '#curTime' )
+    datetime = $( '#curTimeReal' )
     update();
     setInterval( update, 1000 );
 
@@ -55,16 +55,15 @@ function initialCloudbtns() {
         let On = $( "#publishonoff" ).is( ':checked' );
         //console.log( On );
 
-        if ( On ) {
-            let device = $( '#online_device_list' ).find( ":selected" ).val();
-            device = JSON.parse( device );
-            onlineCmd( {
-                cmd: "publish",
-                deviceid: device.id,
-                deviceapi: device.api
-            } );
-        }
-        
+        let device = $( '#online_device_list' ).find( ":selected" ).val();
+        device = JSON.parse( device );
+        onlineCmd( {
+            cmd: "publish",
+            deviceid: device.id,
+            deviceapi: device.api,
+            publish: { publish: On }
+        } );
+
     } );
 }
 
@@ -116,5 +115,6 @@ function updateGUI( data ) {
             $( '#curBrightness' ).html( data.light.b );
         }
     }
-    if ( "simclock" in data ) $( '#curTime' ).html( data.simclock );
+    if ( "simclockOnline" in data ) $( '#onlinesimulatedtime' ).html( data.simclockOnline );
+    if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
 }
