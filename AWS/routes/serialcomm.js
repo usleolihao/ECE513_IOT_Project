@@ -19,7 +19,7 @@ router.post( '/write', function ( req, res ) {
 
 router.post( '/read', function ( req, res ) {
     let retData = rxData;
-    if ( simulatedTime ) retData[ "simclockLocal" ] = simulatedTime.toString();
+    if ( simulatedTime ) retData[ "simclock" ] = simulatedTime.toString();
     res.status( 201 ).json( { cmd: req.body.cmd, data: retData } );
 } );
 
@@ -89,7 +89,6 @@ function openPort( req, res ) {
 
 function closePort( req, res ) {
     serialComPort.close( function ( err ) {
-        console.log( "here" );
         if ( err ) {
             let msg = `Something wrong while closing your comport ${this.path}`;
             console.log( msg );
