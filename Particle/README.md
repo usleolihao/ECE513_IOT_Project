@@ -1,10 +1,10 @@
-# project4
+# SmartHome
 
-A Particle project named project4
+A Particle project named SmartHome
 
 ## Welcome to your project!
 
-Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for project4.
+Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for SmartHome.
 
 #### ```/src``` folder:  
 This is the source folder that contains the firmware files for your project. It should *not* be renamed. 
