@@ -1,3 +1,9 @@
+/******************************************************/
+//       THIS IS A GENERATED FILE - DO NOT EDIT       //
+/******************************************************/
+
+#include "Particle.h"
+#line 1 "/Users/AXIBA/Documents/SynologyDrive/Coding/ece513/Particle/src/SmartHome.ino"
 /*
  * ECE 513 Final Project Samrt Home
  * Description: 
@@ -17,6 +23,13 @@
 #include "smartlight.h"
 #include "toggleLed.h"
 
+void serialCmdProcessing();
+int updateRxCmd(String cmdStr);
+void cloudCmdProcessing();
+void myWebhookHandler(const char *event, const char *data);
+void setup();
+void loop();
+#line 20 "/Users/AXIBA/Documents/SynologyDrive/Coding/ece513/Particle/src/SmartHome.ino"
 SYSTEM_THREAD(ENABLED); 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

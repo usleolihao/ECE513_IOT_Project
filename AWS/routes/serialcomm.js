@@ -19,7 +19,7 @@ router.post( '/write', function ( req, res ) {
 
 router.post( '/read', function ( req, res ) {
     let retData = rxData;
-    if ( simulatedTime ) retData[ "simclock" ] = simulatedTime.toString();
+    if ( simulatedTime ) retData[ "simclockLocal" ] = simulatedTime.toString();
     res.status( 201 ).json( { cmd: req.body.cmd, data: retData } );
 } );
 
