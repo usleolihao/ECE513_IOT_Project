@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Serial communication example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/switch.css">
+    <link rel="stylesheet" href="/stylesheets/rangeslider.css">
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      
+      .centerDiv {
+        position:absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -20%);
+        border:1px solid red;
+        width: 1000px;
+      }
+
+      table {
+        width: 100%;
+      }
+      td, th {
+        height: 35px;
+        text-align: center;
+      }
+
+      th {
+        background-color: lightskyblue;
+      }
+
+    </style>
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/javascripts/rangeslider.min.js"></script>
+    <script>
+      var myInterval = null;
+      var guiUpdated = false;
+      $(function (){
+        initRangeSliders();
+        serailCmd({cmd:"scan"});
+      });
+
+      function initRangeSliders() {
+        var inputs = $('input[type="range"]');
+        var ranges = {};
+        for (var i = 0; i < inputs.length; i++) {
+          var id = $(inputs[i]).attr("id");
+          var $element = $('input[id=\"' + id + '\"]');
+          $element
+            .rangeslider({
+              polyfill: false,
+              onInit: function () {
+                ranges[id] = this.$range;
+                var $handle = $('.rangeslider__handle', this.$range);
+                updateHandle($handle[0], this.value);
+              }
+            })
+            .on('input', function () {
+              var $handle = $('.rangeslider__handle', ranges[this.id]);
+              updateHandle($handle[0], this.value);
+            });
+        }
+        function updateHandle(el, val) {
+            el.textContent = val;
+        }
+      }
+
+      function updateGUI(data) {
+        if (!guiUpdated) {
+          if ("light" in data) {
+            if ("L0" in data.light) $('#smartlightonoff').prop("checked", data.light.L0).change(); 
+            if ("L1" in data.light) $('#smartlightMode').prop("checked", data.light.L1).change();
+            if ("b" in data.light) $('#birghtnessSlider').val(data.light.b).change();
+            if ("m" in data.light) $('#sensorMinSlider').val(data.light.m).change();
+            if ("M" in data.light) $('#sensorMaxSlider').val(data.light.M).change();
+          }
+          if ("led" in data) {
+            if ("h" in data.led) $('#ledHzSlider').val(data.led.h).change();
+          }
+          guiUpdated = true;
+        }
+        if ("light" in data) {
+          if ("s" in data.light) $("#sensorVal").html( data.light.s);
+          if ("b" in data.light) {
+            $('#curBrightness').css("background-color", `hsl(61, ${data.light.b}%, 50%)`);
+            $('#curBrightness').html(data.light.b);
+          }
+        }
+        if ("simclock" in data) $('#curTime').html(data.simclock);
+      }
+
+      function serailCmd(data) {
+        $.ajax({
+          url: '/serial/' + data.cmd,
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+          dataType: 'json'
+        }).done(serailSuccess).fail(serialFailure);
+      }
+
+      function serailSuccess(data, textStatus, jqXHR) {
+        if ("cmd" in data) {
+          if (data.cmd === "scan") updateAvailableSerialList(data);
+          else if (data.cmd === "open") finishOpenClose(data);
+          else if (data.cmd === "close") finishOpenClose(data);
+          
+          if (data.cmd === "read") {
+            let curStr = $('#rdData').html();
+            curStr += JSON.stringify(data.data);
+            $('#rdData').html(curStr);
+            document.getElementById("rdData").scrollTop = document.getElementById("rdData").scrollHeight; 
+            // update GUI
+            updateGUI(data.data);
+          }
+          else {
+            $('#cmdStatusData').html(JSON.stringify(data, null, 2));
+          } 
+        }
+      }
+
+      function serialFailure(jqXHR, textStatus, errorThrown) {
+        $('#cmdStatusData').html(JSON.stringify(jqXHR, null, 2));
+      }
+
+      function updateAvailableSerialList(data) {
+        if ("list" in data) {
+          let curList = data.list;
+          for (let newPort of curList) {
+            $('#com_ports_list').append(`<option value="${newPort}">${newPort}</option>`);
+          }
+          if (curList.length == 1) {
+            $("#com_ports_list option:eq(1)").prop("selected", true);
+            connectDisconnect();
+          }
+        }
+      }
+
+      function connectDisconnect() {
+        if ($("#btnConnect").html() == "Connect") {
+          let selectedPort = $("#com_ports_list").val();
+          if (selectedPort === "null") {
+            window.alert("Please select your COM port");
+            return;
+          }
+          serailCmd({cmd:"open", path:selectedPort});
+        }
+        else {
+          serailCmd({cmd:"close"});
+        }
+      }
+
+      function finishOpenClose(data) {
+        if ($("#btnConnect").html() == "Connect") {
+          $("#btnConnect").html("Disconnect");
+          $("#com_status").val(data.msg);
+          myInterval = setInterval(function(){serailCmd({cmd:"read"});}, 1000);
+        }
+        else {
+          $("#btnConnect").html("Connect");
+          $("#com_status").val(data.msg);
+          if (myInterval != null) {
+            clearInterval(myInterval);
+            myInterval = null;
+          }
+        }
+      }
+      
+      function smartLightControl(option, value) {
+        let txcmd = {
+          cmd: "write",
+          data: {
+            smartlight: { }
+          }
+        };
+        txcmd.data.smartlight[option] = value;
+        
+        console.log(JSON.stringify(txcmd));
+        serailCmd(txcmd);
+      }
+
+      function toggleLedControl(value) {
+        let txcmd = {
+          cmd: "write",
+          data: {
+            led: {frequency: value}
+          }
+        };
+        console.log(JSON.stringify(txcmd));
+        serailCmd(txcmd);
+      }
+      
+
+</script>
+  </head>
+  <body>
+    <h1>Controller GUI</h1>
+    
+    <div class="centerDiv">
+      <table>
+        <tr><td colspan="4"><span id="curTime"></span></td></tr>
+        <tr><th colspan="4">Serial Comm. </th></tr>
+        <tr>
+          <td>
+            <select id="com_ports_list">
+              <option selected value="null">Please select your port</option>
+            </select>
+          </td>
+          <td>
+            <button id="btnConnect" onclick="connectDisconnect()">Connect</button>
+          </td>
+          <td>COM status:</td>
+          <td>
+            <input id="com_status" name="com_status" style="width:600px;" readonly value="">
+          </td>
+        </tr>  
+      </table>
+      <br/>
+      <table>
+        <tr>
+          <th colspan="4">Smart Light</th>
+        </tr>
+        <tr>
+          <td>
+            <div class="toggleswitch">
+              <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightonoff" onchange="smartLightControl('on', this.checked)">
+              <label class="toggleswitch-label" for="smartlightonoff">
+                  <span class="toggleswitch-inner onoffSwitchText"></span>
+                  <span class="toggleswitch-switch"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="toggleswitch">
+              <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightMode" onchange="smartLightControl('auto', this.checked)">
+              <label class="toggleswitch-label" for="smartlightMode">
+                  <span class="toggleswitch-inner manualAutoSwitchText"></span>
+                  <span class="toggleswitch-switch"></span>
+              </label>
+            </div>
+          </td>
+          <td>Brightness:</td>
+          <td colspan="3">
+            <input id="birghtnessSlider" type="range" min="0" max="100" step="1" value="0" onchange="smartLightControl('brightness', this.value)">
+          </td>
+        </tr>
+        <tr><td colspan="4" style="background-color:linen;">Sensor setting</td></tr>
+        <tr>
+          <td>Sensor min:</td>
+          <td>
+            <input id="sensorMinSlider" type="range" min="0" max="4095" step="1" value="500" onchange="smartLightControl('min', this.value)">
+          </td>
+          <td>Sensor max:</td>
+          <td>
+            <input id="sensorMaxSlider" type="range" min="0" max="4095" step="1" value="2500" onchange="smartLightControl('max', this.value)">
+          </td>
+        </tr>
+        <tr>
+          <td>Sensor Val:</td>
+          <td><span id="sensorVal"></span></td>
+          <td>Present brightness:</td>
+          <td><div id="curBrightness" style="width: 100%; height:100%;"></div></td>
+        </tr>
+        
+      </table>
+      <br/>
+      <table>
+        <tr>
+          <th colspan="2">LED (D7) blinking</th>
+        </tr>
+        <tr>
+          <td>Hz:</td>
+          <td><input id="ledHzSlider" type="range" min="1" max="10" step="1" value="1" onchange="toggleLedControl(this.value)"></td>
+          
+        </tr>
+      </table>
+      <br/>
+      <div style="display:inline-block; width:49%; height: 200px;">
+        <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
+      </div>
+      <div style="display:inline-block; width:49%; height: 200px;">
+        <textarea id="rdData" style="width:100%; height:100%"></textarea>
+      </div>
+    </div>
+  </body>
+</html>

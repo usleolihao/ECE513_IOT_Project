@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: url("../images/bg2.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+body>div.centerDiv h4 {
+    color: skyblue;
+}
+
+.modal-center>ul {
+    border: 1px solid #ffffff;
+    width: 94vw;
+    opacity: 0.9;
+    margin-top: 2vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+select {
+    display: inline-block;
+}
+
+li.collection-header~.smartlightpanel {
+    column-count: 3;
+}
+
+div.slideroffsets {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}

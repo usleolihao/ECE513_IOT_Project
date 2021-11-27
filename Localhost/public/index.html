@@ -1,293 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Serial communication example</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/switch.css">
-    <link rel="stylesheet" href="/stylesheets/rangeslider.css">
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      h1 {
-        text-align: center;
-      }
-      
-      .centerDiv {
-        position:absolute;
-        left: 50%;
-        top: 20%;
-        transform: translate(-50%, -20%);
-        border:1px solid red;
-        width: 1000px;
-      }
+<!doctype html>
+<html>
 
-      table {
-        width: 100%;
-      }
-      td, th {
-        height: 35px;
-        text-align: center;
-      }
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.84.0">
+        <title>Dashboard Localhost</title>
+        <!-- Bootstrap core CSS -->
+        <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
 
-      th {
-        background-color: lightskyblue;
-      }
-
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+    }
     </style>
-    
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="/javascripts/rangeslider.min.js"></script>
-    <script>
-      var myInterval = null;
-      var guiUpdated = false;
-      $(function (){
-        initRangeSliders();
-        serailCmd({cmd:"scan"});
-      });
+        <!-- Custom styles for this template -->
+        <link href="stylesheets/carousel.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <link rel="stylesheet" href="stylesheets/materialize.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <!-- Moment -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+        <!-- main css -->
+        <link rel="stylesheet" href="stylesheets/dashboard.css">
+        <link rel="stylesheet" href="stylesheets/switch.css">
+        <link rel="stylesheet" href="stylesheets/rangeslider.css">
+        <!-- Helper function -->
+        <script src="javascripts/rangeslider.min.js"></script>
+        <!-- main script -->
+        <script src="javascripts/dashboard.js"></script>
+        <script src="javascripts/localcomm.js"></script>
+    </head>
 
-      function initRangeSliders() {
-        var inputs = $('input[type="range"]');
-        var ranges = {};
-        for (var i = 0; i < inputs.length; i++) {
-          var id = $(inputs[i]).attr("id");
-          var $element = $('input[id=\"' + id + '\"]');
-          $element
-            .rangeslider({
-              polyfill: false,
-              onInit: function () {
-                ranges[id] = this.$range;
-                var $handle = $('.rangeslider__handle', this.$range);
-                updateHandle($handle[0], this.value);
-              }
-            })
-            .on('input', function () {
-              var $handle = $('.rangeslider__handle', ranges[this.id]);
-              updateHandle($handle[0], this.value);
-            });
-        }
-        function updateHandle(el, val) {
-            el.textContent = val;
-        }
-      }
-
-      function updateGUI(data) {
-        if (!guiUpdated) {
-          if ("light" in data) {
-            if ("L0" in data.light) $('#smartlightonoff').prop("checked", data.light.L0).change(); 
-            if ("L1" in data.light) $('#smartlightMode').prop("checked", data.light.L1).change();
-            if ("b" in data.light) $('#birghtnessSlider').val(data.light.b).change();
-            if ("m" in data.light) $('#sensorMinSlider').val(data.light.m).change();
-            if ("M" in data.light) $('#sensorMaxSlider').val(data.light.M).change();
-          }
-          if ("led" in data) {
-            if ("h" in data.led) $('#ledHzSlider').val(data.led.h).change();
-          }
-          guiUpdated = true;
-        }
-        if ("light" in data) {
-          if ("s" in data.light) $("#sensorVal").html( data.light.s);
-          if ("b" in data.light) {
-            $('#curBrightness').css("background-color", `hsl(61, ${data.light.b}%, 50%)`);
-            $('#curBrightness').html(data.light.b);
-          }
-        }
-        if ("simclock" in data) $('#curTime').html(data.simclock);
-      }
-
-      function serailCmd(data) {
-        $.ajax({
-          url: '/serial/' + data.cmd,
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify(data),
-          dataType: 'json'
-        }).done(serailSuccess).fail(serialFailure);
-      }
-
-      function serailSuccess(data, textStatus, jqXHR) {
-        if ("cmd" in data) {
-          if (data.cmd === "scan") updateAvailableSerialList(data);
-          else if (data.cmd === "open") finishOpenClose(data);
-          else if (data.cmd === "close") finishOpenClose(data);
-          
-          if (data.cmd === "read") {
-            let curStr = $('#rdData').html();
-            curStr += JSON.stringify(data.data);
-            $('#rdData').html(curStr);
-            document.getElementById("rdData").scrollTop = document.getElementById("rdData").scrollHeight; 
-            // update GUI
-            updateGUI(data.data);
-          }
-          else {
-            $('#cmdStatusData').html(JSON.stringify(data, null, 2));
-          } 
-        }
-      }
-
-      function serialFailure(jqXHR, textStatus, errorThrown) {
-        $('#cmdStatusData').html(JSON.stringify(jqXHR, null, 2));
-      }
-
-      function updateAvailableSerialList(data) {
-        if ("list" in data) {
-          let curList = data.list;
-          for (let newPort of curList) {
-            $('#com_ports_list').append(`<option value="${newPort}">${newPort}</option>`);
-          }
-          if (curList.length == 1) {
-            $("#com_ports_list option:eq(1)").prop("selected", true);
-            connectDisconnect();
-          }
-        }
-      }
-
-      function connectDisconnect() {
-        if ($("#btnConnect").html() == "Connect") {
-          let selectedPort = $("#com_ports_list").val();
-          if (selectedPort === "null") {
-            window.alert("Please select your COM port");
-            return;
-          }
-          serailCmd({cmd:"open", path:selectedPort});
-        }
-        else {
-          serailCmd({cmd:"close"});
-        }
-      }
-
-      function finishOpenClose(data) {
-        if ($("#btnConnect").html() == "Connect") {
-          $("#btnConnect").html("Disconnect");
-          $("#com_status").val(data.msg);
-          myInterval = setInterval(function(){serailCmd({cmd:"read"});}, 1000);
-        }
-        else {
-          $("#btnConnect").html("Connect");
-          $("#com_status").val(data.msg);
-          if (myInterval != null) {
-            clearInterval(myInterval);
-            myInterval = null;
-          }
-        }
-      }
-      
-      function smartLightControl(option, value) {
-        let txcmd = {
-          cmd: "write",
-          data: {
-            smartlight: { }
-          }
-        };
-        txcmd.data.smartlight[option] = value;
-        
-        console.log(JSON.stringify(txcmd));
-        serailCmd(txcmd);
-      }
-
-      function toggleLedControl(value) {
-        let txcmd = {
-          cmd: "write",
-          data: {
-            led: {frequency: value}
-          }
-        };
-        console.log(JSON.stringify(txcmd));
-        serailCmd(txcmd);
-      }
-      
-
-</script>
-  </head>
-  <body>
-    <h1>Controller GUI</h1>
-    
-    <div class="centerDiv">
-      <table>
-        <tr><td colspan="4"><span id="curTime"></span></td></tr>
-        <tr><th colspan="4">Serial Comm. </th></tr>
-        <tr>
-          <td>
-            <select id="com_ports_list">
-              <option selected value="null">Please select your port</option>
-            </select>
-          </td>
-          <td>
-            <button id="btnConnect" onclick="connectDisconnect()">Connect</button>
-          </td>
-          <td>COM status:</td>
-          <td>
-            <input id="com_status" name="com_status" style="width:600px;" readonly value="">
-          </td>
-        </tr>  
-      </table>
-      <br/>
-      <table>
-        <tr>
-          <th colspan="4">Smart Light</th>
-        </tr>
-        <tr>
-          <td>
-            <div class="toggleswitch">
-              <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightonoff" onchange="smartLightControl('on', this.checked)">
-              <label class="toggleswitch-label" for="smartlightonoff">
-                  <span class="toggleswitch-inner onoffSwitchText"></span>
-                  <span class="toggleswitch-switch"></span>
-              </label>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">SmartHome</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <!--
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="account">Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="devices">Devices</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="edit">Edit Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" id="logoutbtn">Logout</a>
+                        </li>
+                    -->
+                    </ul>
+                </div>
             </div>
-          </td>
-          <td>
-            <div class="toggleswitch">
-              <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightMode" onchange="smartLightControl('auto', this.checked)">
-              <label class="toggleswitch-label" for="smartlightMode">
-                  <span class="toggleswitch-inner manualAutoSwitchText"></span>
-                  <span class="toggleswitch-switch"></span>
-              </label>
-            </div>
-          </td>
-          <td>Brightness:</td>
-          <td colspan="3">
-            <input id="birghtnessSlider" type="range" min="0" max="100" step="1" value="0" onchange="smartLightControl('brightness', this.value)">
-          </td>
-        </tr>
-        <tr><td colspan="4" style="background-color:linen;">Sensor setting</td></tr>
-        <tr>
-          <td>Sensor min:</td>
-          <td>
-            <input id="sensorMinSlider" type="range" min="0" max="4095" step="1" value="500" onchange="smartLightControl('min', this.value)">
-          </td>
-          <td>Sensor max:</td>
-          <td>
-            <input id="sensorMaxSlider" type="range" min="0" max="4095" step="1" value="2500" onchange="smartLightControl('max', this.value)">
-          </td>
-        </tr>
-        <tr>
-          <td>Sensor Val:</td>
-          <td><span id="sensorVal"></span></td>
-          <td>Present brightness:</td>
-          <td><div id="curBrightness" style="width: 100%; height:100%;"></div></td>
-        </tr>
-        
-      </table>
-      <br/>
-      <table>
-        <tr>
-          <th colspan="2">LED (D7) blinking</th>
-        </tr>
-        <tr>
-          <td>Hz:</td>
-          <td><input id="ledHzSlider" type="range" min="1" max="10" step="1" value="1" onchange="toggleLedControl(this.value)"></td>
-          
-        </tr>
-      </table>
-      <br/>
-      <div style="display:inline-block; width:49%; height: 200px;">
-        <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
-      </div>
-      <div style="display:inline-block; width:49%; height: 200px;">
-        <textarea id="rdData" style="width:100%; height:100%"></textarea>
-      </div>
-    </div>
-  </body>
+        </nav>
+        <div class="modal-center centerDiv">
+            <ul class="collection with-header">
+                <li class="collection-header">
+                    <h4>Dashboard</h4>
+                </li>
+                <li class="collection-item">
+                    <span>Real time:</span><br>
+                    <span id="curTimeReal"></span>
+                </li>
+                <li class="collection-item">
+                    <span>Local Serial Communication</span>
+                    <select id="com_ports_list">
+                        <option selected value="null">Please select your port</option>
+                    </select>
+                    <button class="waves-effect waves-light btn" id="btnConnect">Connect</button>
+                </li>
+                <li class="collection-item">
+                    <span>COM status:</span>
+                    <div style="display:inline-block; width:100%; height: 3rem;">
+                        <textarea id="com_status" name="com_status" style="width:100%;height:100%" readonly value=""></textarea>
+                    </div>
+                    <span id="localsimulatedtime">Local Serial Simulated Clock Here</span>
+                </li>
+            </ul>
+            <ul class="collection with-header">
+                <li class="collection-header" style="background-color:linen;">
+                    <h5>Smart Light</h5>
+                </li>
+                <li class="collection-item smartlightpanel">
+                    <div class="toggleswitch">
+                        <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightonoff" onchange="smartLightControl('on', this.checked)">
+                        <label class="toggleswitch-label" for="smartlightonoff">
+                            <span class="toggleswitch-inner onoffSwitchText"></span>
+                            <span class="toggleswitch-switch"></span>
+                        </label>
+                    </div>
+                    <div class="toggleswitch">
+                        <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightMode" onchange="smartLightControl('auto', this.checked)">
+                        <label class="toggleswitch-label" for="smartlightMode">
+                            <span class="toggleswitch-inner manualAutoSwitchText"></span>
+                            <span class="toggleswitch-switch"></span>
+                        </label>
+                    </div>
+                </li>
+                <li class="collection-item">
+                    <span>Brightness:</span>
+                    <div class="slideroffsets">
+                        <input id="birghtnessSlider" type="range" min="0" max="100" step="1" value="0" onchange="smartLightControl('brightness', this.value)">
+                    </div>
+                </li>
+                <li class="collection-item" style="background-color:linen;">
+                    <span>Sensor setting</span>
+                </li>
+                <li class="collection-item">
+                    <span>Sensor min:</span>
+                    <div class="slideroffsets">
+                        <input id="sensorMinSlider" type="range" min="0" max="4095" step="1" value="500" onchange="smartLightControl('min', this.value)">
+                    </div>
+                    <span>Sensor max:</span>
+                    <div class="slideroffsets">
+                        <input id="sensorMaxSlider" type="range" min="0" max="4095" step="1" value="2500" onchange="smartLightControl('max', this.value)">
+                    </div>
+                    <span>Sensor Val:</span>
+                    <span id="sensorVal"></span>
+                    <br>
+                    <span>Present brightness:</span>
+                    <div id="curBrightness" style="width: 100%; height:100%;"></div>
+                </li>
+            </ul>
+            <ul class="collection with-header">
+                <li class="collection-header" style="background-color:linen;">
+                    <h5>LED (D7) blinking</h5>
+                </li>
+                <li class="collection-item">
+                    <span>Hz:</span>
+                    <div class="slideroffsets">
+                        <input id="ledHzSlider" type="range" min="1" max="10" step="1" value="1" onchange="toggleLedControl(this.value)">
+                    </div>
+                </li>
+            </ul>
+            <ul class="collection with-header">
+                <li class="collection-header" style="background-color:linen;">
+                    <h5>CMD Status Data Output</h5>
+                </li>
+                <li class="collection-item">
+                    <div style="display:inline-block; width:100%; height: 20rem;">
+                        <textarea id="cmdStatusData" style="width:100%; height:100%"></textarea>
+                    </div>
+                </li>
+                <li class="collection-header" style="background-color:linen;">
+                    <h5>RD Data Output</h5>
+                </li>
+                <li class="collection-item">
+                    <div style="display:inline-block; width:100%; height: 20rem;">
+                        <textarea id="rdData" style="width:100%; height:100%"></textarea>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <script src="javascripts/bootstrap.bundle.min.js"></script>
+    </body>
+
 </html>
