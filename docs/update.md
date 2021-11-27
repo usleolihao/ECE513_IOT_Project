@@ -1,25 +1,25 @@
 ### v1.08 11/25/2021
 1. Particle firmware
 	- Implement your firmware for the following things 
-		- [ ] Get temperature and humidity using DHT 11 
-		- [ ] Get values from two photoresistors
+		- [x] Get temperature and humidity using DHT 11 
+		- [x] Get values from two photoresistors
 		- [ ] Estimate door status
 		- [ ]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
 				- [ ]  Minimum requirements: By clicking a button, a user can see received data 
 2. Local host (node.js + serialport + your web-based GUI)
 	- Implement your web-based GUI and localhost server for the following things 
-		- [ ] Display your measurement data for
-			- [ ] Temperature/Humidity from DHT 11
-			- [ ] Values from two photoresistors
-			- [ ] Door status
-			- [ ] Smart light brightness
+		- [x] Display your measurement data for
+			- [x] Temperature/Humidity from DHT 11
+			- [x] Values from two photoresistors
+			- [x] Door status
+			- [x] Smart light brightness
 3. AWS
 	- Client side web pages (do not need to support mobile devices for this checkpoint 2)
 		- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
-		- [ ] A visualization/control interface
+		- [x] A visualization/control interface
 			- [ ]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
-		- [ ] Server side 
-			- [ ] implement simulated clock for local serial
+		- [x] Server side 
+			- [x] implement simulated clock for local serial
 
 
 ### v1.07 11/25/2021

@@ -70,8 +70,11 @@ function openPort( req, res ) {
     serialComPort = new serialPort( pathStr, { baudRate: 9600, autoOpen: false } );
     parser = serialComPort.pipe( new Delimiter( { delimiter: '\r\n' } ) );
     parser.on( 'data', function ( data ) {
-        rxData = JSON.parse( data );
-        simulatedClock( rxData );
+        if ( typeof data == "object" ) {
+            console( data );
+        }
+        //rxData = JSON.parse( data );
+        //simulatedClock( rxData );
     } );
 
     serialComPort.open( function ( err ) {

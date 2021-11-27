@@ -3,22 +3,29 @@
 
 #include "common.h"
 
-class CToggleLed {
+class CToggleLed
+{
 public:
     CToggleLed();
     void cmdProcessing(JSONValue cmdJson);
     void execute();
-    String getStatusStr() {return statusStr;};
+    String getStatusStr() { return statusStr; };
+
 private:
     void createStatusStr();
+
 private:
-    enum STATE {S_OFF, S_ON};
+    enum STATE
+    {
+        S_OFF,
+        S_ON
+    };
     STATE state;
 
     int tick;
     int period;
     int hz;
-    
+
     String statusStr;
 };
 
