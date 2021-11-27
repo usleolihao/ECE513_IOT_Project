@@ -6,5 +6,4 @@ node_modules/*
 */package-lock.json
 Particle/target/*
 Particle/.vscode/settings.json
-Particle.zip
 Localhost.zip
