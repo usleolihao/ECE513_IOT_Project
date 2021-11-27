@@ -79,5 +79,5 @@ function updateGUI( data ) {
             $( '#curBrightness' ).html( data.light.b );
         }
     }
-    if ( "simclock" in data ) $( '#localsimulatedtime' ).html( data.simclock );
+    if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
 }

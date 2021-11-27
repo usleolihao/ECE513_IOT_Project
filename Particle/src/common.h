@@ -17,16 +17,12 @@
 // LED/RGB Setting
 ////////////////////////////˝/////////////////////////////////////////////////////////////////////////////
 // Blue led
-#define LED D7
+#define LED D3
 #define TOGGLE_FREQUENCY 1 // 1 Hz
 
 // RGB led
 #define RGB_BRIGHTNESS_MAX 255
 #define RGB_BRIGHTNESS_DEAULT 128
-
-// This would be where your A/C powering circuit would be connected to.
-// This is being simulated with a LED.
-#define LED_PIN D3
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Photoresistor Setting
@@ -45,7 +41,7 @@
 // DHT sensor Setting
 ////////////////////////////˝/////////////////////////////////////////////////////////////////////////////
 // Pin where the DHT sensor is connected to
-#define DHTPIN 1
+#define DHTPIN D1
 // The type of DHT sensor being used
 #define DHTTYPE DHT11
 

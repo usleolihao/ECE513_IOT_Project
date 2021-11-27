@@ -1,11 +1,22 @@
-### v1.08 11/25/2021
+### v1.09 11/27/2021
+
+3. AWS
+	- Client side web pages (do not need to support mobile devices for this checkpoint 2)
+		- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
+		- [ ] Door Sensor Status
+		- [ ] Humidity Status
+		- [ ] Temperature Status
+		- [ ] Weather Status from third partry API
+
+### v1.08 11/26/2021
+
 1. Particle firmware
 	- Implement your firmware for the following things 
 		- [x] Get temperature and humidity using DHT 11 
 		- [x] Get values from two photoresistors
-		- [ ] Estimate door status
-		- [ ]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
-				- [ ]  Minimum requirements: By clicking a button, a user can see received data 
+		- [x] Estimate door status
+		- [x]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
+				- [x]  Minimum requirements: By clicking a button, a user can see received data 
 2. Local host (node.js + serialport + your web-based GUI)
 	- Implement your web-based GUI and localhost server for the following things 
 		- [x] Display your measurement data for
@@ -15,9 +26,8 @@
 			- [x] Smart light brightness
 3. AWS
 	- Client side web pages (do not need to support mobile devices for this checkpoint 2)
-		- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
 		- [x] A visualization/control interface
-			- [ ]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
+			- [x]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
 		- [x] Server side 
 			- [x] implement simulated clock for local serial
 

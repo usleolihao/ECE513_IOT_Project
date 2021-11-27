@@ -70,11 +70,16 @@ function openPort( req, res ) {
     serialComPort = new serialPort( pathStr, { baudRate: 9600, autoOpen: false } );
     parser = serialComPort.pipe( new Delimiter( { delimiter: '\r\n' } ) );
     parser.on( 'data', function ( data ) {
-        if ( typeof data == "object" ) {
-            console( data );
+        try {
+            rxData = JSON.parse( data );
+            simulatedClock( rxData );
+        } catch ( err ) {
+            if ( err.message === "Unexpected number in JSON at position 1" ) {
+                console.log( "DHT Reading value error." );
+            } else {
+                console.log( err.message );
+            }
         }
-        //rxData = JSON.parse( data );
-        //simulatedClock( rxData );
     } );
 
     serialComPort.open( function ( err ) {

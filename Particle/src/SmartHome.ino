@@ -3,12 +3,12 @@
  * Description: 
  * Smart light / Sensor DHT11 / Publish / Reading value
  * Author: Lihao Guo, Nasser Salem Albalawi
- * Date: 11/27/2021
+ * Date: 11/26/2021
  */
 
 // Please configure your project
 // From the Command Palette
-//   1. select Particle: Configure Project for Device
+//   1. select Particle: Configure Project for Device
 //   2. the device OS version you'd like to build for: (use 2.2.0)
 //   3. the type of device to you'd like to build for (i.e., select your device - Argon or Photon)
 //   4. the name or device ID of the device you want to flash to. Just leave this blank
@@ -16,18 +16,18 @@
 #include "common.h"
 #include "smartlight.h"
 #include "toggleLed.h"
-#include "DHT.h"
+#include "Adafruit_DHT_Particle.h"
 
 // The following line is optional, but recommended in most firmware.
 // It allows your code to run before the cloud is connected.
 SYSTEM_THREAD(ENABLED);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Global variables
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This uses the USB serial port for debugging logs.
 SerialLogHandler logHandler;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Global variables
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Sensor Variables
 CSmartLight smartLight;
 CToggleLed toggleLed;
@@ -42,6 +42,9 @@ DHT dht(DHTPIN, DHTTYPE);
 // used later to store the values of the photoresistors.
 int smart_light_analogvalue;
 int door_analogvalue;
+double cel;
+double far;
+double hum;
 
 // Counter
 int counter_serial;
@@ -120,30 +123,6 @@ void myWebhookHandler(const char *event, const char *data)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Functionality
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// This function is called when the Particle.function (A/C simulation) is called
-int ledToggle(String command)
-{
-  if (command.equals("on"))
-  {
-    digitalWrite(LED_PIN, HIGH);
-    return 1;
-  }
-  else if (command.equals("off"))
-  {
-    digitalWrite(LED_PIN, LOW);
-    return 0;
-  }
-  else
-  {
-    // Unknown option
-    return -1;
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Particle Part
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // setup() runs once, when the device is first turned on.
@@ -153,12 +132,14 @@ void setup()
   // Common Part
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Put initialization like pinMode and begin functions here.
-  pinMode(LED_PIN, OUTPUT);    // Our LED pin is an output (turning on the LED)
-  digitalWrite(LED_PIN, HIGH); //PWM could be used to simulate the speed of an A/C, On/OFF for now.
+  pinMode(LED, OUTPUT);
   RGB.control(true);
   RGB.color(255, 255, 255); // default color
   counter_serial = 0;
   counter_cloud = 0;
+  cel = 0;
+  far = 0;
+  hum = 0;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Cloud Part
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -166,17 +147,16 @@ void setup()
   rxCloudCmdStr = "";
   statusStr = "";
   ledHighLow = LOW;
-
   // Particle.variable() so that we can access the values of the photoresistors from the cloud
   Particle.variable("smart_light_analogvalue", smart_light_analogvalue);
   Particle.variable("door_analogvalue", door_analogvalue);
-
+  Particle.variable("Temperature_Celcius", cel);
+  Particle.variable("Temperature_Farenheit", far);
+  Particle.variable("Humidity", hum);
   // remote control
   Particle.function("cloudcmd", updateRxCmd);
-  Particle.function("led", ledToggle); // turn the LED on/off (our A/C unit!) from cloud
   // Subscribe to the webhook response event
   Particle.subscribe("hook-response/smarthome", myWebhookHandler);
-
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Others
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -193,21 +173,24 @@ void loop()
   unsigned long period = millis() - t;
 
   //the value of the photoresistors and store them in the int variables
-  //smart_light_analogvalue = analogRead(LIGHT_SENSOR);
+  smart_light_analogvalue = analogRead(LIGHT_SENSOR);
   door_analogvalue = analogRead(DOOR_SENSOR);
 
   // Reading temperature or humidity takes about 250 milliseconds!
   // Sensor readings may also be up to 2 seconds 'old' (the DHT11 is a very slow sensor)
   // Read temperature as Celsius
-  double c = dht.getTempCelcius();
+  cel = dht.getTempCelcius();
   // Read temperature as Farenheit
-  double f = dht.getTempFarenheit();
-
-  Particle.variable("Temperature", f);
+  far = dht.getTempFarenheit();
   // Read Humidity as %
-  double h = dht.getHumidity();
+  hum = dht.getHumidity();
 
-  Particle.variable("Humidity", h);
+  if (isnan(hum) || isnan(cel) || isnan(far))
+  {
+    Log.info("Failed to read from DHT sensor!");
+    return;
+  }
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Serial Cmd Part
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -215,9 +198,9 @@ void loop()
   if (counter_serial % (SERAIL_COMM_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_serial = 0;
-    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%d,\"Temperature\":%d,\"Temperature\":%d}",
+    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}",
                   (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
-                  period, smartLight.getSensorVal(), door_analogvalue, h, c, f);
+                  period, smart_light_analogvalue, door_analogvalue, hum, cel, far);
     Serial.println();
   }
 
@@ -228,9 +211,9 @@ void loop()
   if (counter_cloud % (PUBLISH_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_cloud = 0;
-    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%d,\"Temperature\":%d,\"Temperature\":%d}",
+    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f %%,\"Temperature\":%.2f,\"Temperature\":%.2f}",
                                (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
-                               period, smartLight.getSensorVal(), door_analogvalue, h, c, f);
+                               period, smart_light_analogvalue, door_analogvalue, hum, cel, far);
     if (bPublish)
     {
       Particle.publish("smarthome", statusStr, PRIVATE);
@@ -247,22 +230,6 @@ void loop()
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   smartLight.execute();
   toggleLed.execute();
-
-  // Check if any reads failed and exit early (to try again).
-  if (isnan(h) || isnan(c) || isnan(f))
-  {
-    Log.info("Failed to read from DHT sensor!");
-  }
-  else
-  {
-    // This prints the value to the USB debugging serial port (for optional
-    // debugging purposes, newer and better than serial.print())
-    Log.info("smartlightvalue = %d", smart_light_analogvalue);
-    Log.info("doorvalue = %d", door_analogvalue);
-    Log.info("Humidity = %.2f %%", h);
-    Log.info("Temperature = %.2f *C", c);
-    Log.info("Temperature = %.2f *F", f);
-  }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Counter Part
