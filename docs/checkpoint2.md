@@ -3,23 +3,23 @@
 1. Implementations: three parts - particle firmware, localhost, and AWS.
 	1. Particle firmware
 		- Implement your firmware for the following things 
-			- [ ] Serial communication (i.e., localhost - device)
+			- [x] Serial communication (i.e., localhost - device)
 				- your commands and command processing
-			- [ ] Cloud communication (i.e., AWS - device)
+			- [x] Cloud communication (i.e., AWS - device)
 				- your commands and command processing 
-			- [ ] Get temperature and humidity using DHT 11 
-			- [ ] Get values from two photoresistors
-			- [ ] Adjust smart light brightness (i.e., manual/auto mode)
-			- [ ] Estimate door status
+			- [x] Get temperature and humidity using DHT 11 
+			- [x] Get values from two photoresistors
+			- [x] Adjust smart light brightness (i.e., manual/auto mode)
+			- [x] Estimate door status
 	2. Local host (node.js + serialport + your web-based GUI)
 		- Implement your web-based GUI and localhost server for the following things 
-			- [ ] Serial communication (connect/disconnect/device selection)
-			- [ ] Display your measurement data for
-				- [ ] Temperature/Humidity from DHT 11
-				- [ ] Values from two photoresistors
-				- [ ] Door status
-				- [ ] Smart light brightness
-			- [ ] Interface to adjust brightness of smart light (i.e., manual/auto mode)
+			- [x] Serial communication (connect/disconnect/device selection)
+			- [x] Display your measurement data for
+				- [x] Temperature/Humidity from DHT 11
+				- [x] Values from two photoresistors
+				- [x] Door status
+				- [x] Smart light brightness
+			- [x] Interface to adjust brightness of smart light (i.e., manual/auto mode)
 	3. AWS
 		- Client side web pages (do not need to support mobile devices for this checkpoint 2)
 			- [x] Sign-up interface 
@@ -29,14 +29,14 @@
 				- Use case
 					- [x] A user already has “device name”, “device ID”, and “access-token”.
 					- [x] A user can register a device using the above information
-					- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
-			- [ ] A visualization/control interface
-				- [ ]  A user can issue a “ping” command to check whether the registered device is online or offline
-				- [ ]  A user can issue a “publish” command to receive data (i.e., enable/disable “publish” mode)
-				- [ ]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
-					- [ ]  Minimum requirements: By clicking a button, a user can see received data 
-			- [ ] Server side 
-				- [ ] Implement your routers to communicate 1) between AWS and clients, and 2) between AWS and the registered device 
+					- [x] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
+			- [x] A visualization/control interface
+				- [x]  A user can issue a “ping” command to check whether the registered device is online or offline
+				- [x]  A user can issue a “publish” command to receive data (i.e., enable/disable “publish” mode)
+				- [x]  A user can receive data from the device where the data should contain “time”, “temperature”, “humidity”, and “door status”
+					- [x]  Minimum requirements: By clicking a button, a user can see received data 
+			- [x] Server side 
+				- [x] Implement your routers to communicate 1) between AWS and clients, and 2) between AWS and the registered device 
 				- [x] Should use MongoDB for sign-up/sign-in/device registration 
 				- [x] Should implement simulated clock
 			- Should consider the following things 
@@ -62,10 +62,10 @@
 		- [x] Team information (name, email, project level) 
 		- [x] AWS address (i.e., URL) 
 		- [ ] Your video demo information (i.e., where to watch) 
-		- [ ] Your particle device information (i.e., what are you using for your project?) 
-		- [ ] Simple description of your implementation
-			- [ ]  Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) 
-		- [ ] How to use your systems
+		- [x] Your particle device information (i.e., what are you using for your project?) 
+		- [x] Simple description of your implementation
+			- [x]  Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) 
+		- [x] How to use your systems
 4. Submission (Double check before submit)
 	- [ ] Please prepare the below folder structure for your submission
 	- [ ] Folder structure (where <span style="color: green;">green color</span> text represents a folder)
@@ -73,10 +73,10 @@
 			- [ ] All your code for the particle firmware here
 		- [x] <span style="color: green;">Localhost</span>
 			- [ ] All your code for the localhost
-			- [ ] __Should **not** include package-lock.json and node_modules__ 
+			- [x] _Should **not** include package-lock.json and node_modules_
 		- [x] <span style="color: green;">AWS</span>
 			- [ ] All your code for your AWS
-			- [ ] __Should **not** include package-lock.json and node_modules__
+			- [x] _Should **not** include package-lock.json and node_modules_
 		- [ ] README.txt
 		- [ ] PDF file for your state machines/state charts
 	- [ ] Submit one single zip file to D2L

@@ -9,4 +9,4 @@ show_downloads: [true]
 
 github:
   # is_project_page: false
-  zip_url: https://github.com/usleolihao/ECE513_IOT_Project/raw/main/docs/Particle.zip
+  zip_url: https://ec2-54-151-67-43.us-west-1.compute.amazonaws.com/Particle.zip
