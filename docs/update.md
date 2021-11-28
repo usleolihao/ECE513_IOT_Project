@@ -2,11 +2,10 @@
 
 3. AWS
 	- Client side web pages (do not need to support mobile devices for this checkpoint 2)
-		- [ ] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
-		- [ ] Door Sensor Status
-		- [ ] Humidity Status
-		- [ ] Temperature Status
-		- [ ] Weather Status from third partry API
+		- [x] Your interface should provide an instruction (e.g., show information regarding event name, URL, Request type, Form fields in Advanced Settings) for the user to create the corresponding webhook 
+		- [x] Door Sensor Status
+		- [x] Humidity Status
+		- [x] Temperature Status
 
 ### v1.08 11/26/2021
 

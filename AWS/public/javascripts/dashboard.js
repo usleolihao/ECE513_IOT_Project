@@ -1,4 +1,5 @@
 var myInterval = null;
+var OnlineInterval = null;
 var guiUpdated = false;
 var datetime = null,
     date = null;
@@ -7,6 +8,21 @@ var update = function () {
     date = moment( new Date() )
     datetime.html( date.format( 'dddd, MMMM Do YYYY, h:mm:ss a' ) );
 };
+
+
+const weather = {
+    "cloud": 'fa-cloud',
+    "cloud-rain": 'fa-cloud-rain',
+    "cloud-sun": 'fa-cloud-sun',
+    "sun": 'fa-sun',
+    "wind": 'fa-wind',
+    "snowflake": 'fa-snowflake'
+};
+
+function updateWeather() {
+    $( '#weather' ).html( '<i class="fas fa-sun"></i>' );
+}
+
 
 $( function () {
 
@@ -28,8 +44,9 @@ $( function () {
     datetime = $( '#curTimeReal' )
     update();
     setInterval( update, 1000 );
-
+    updateWeather();
 } );
+
 
 function initialLocalbtns() {
     $( '#btnConnect' ).click( connectDisconnect );
@@ -117,4 +134,10 @@ function updateGUI( data ) {
     }
     if ( "simclockOnline" in data ) $( '#onlinesimulatedtime' ).html( data.simclockOnline );
     if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
+    //door senosr
+    if ( "door_sensor" in data ) $( '#door_status' ).html( "sensor(" + data.door_sensor + ")" );
+    if ( "Humidity" in data ) $( '#Humidity' ).html( data.Humidity + "%" );
+    if ( "Temperature" in data ) $( '#Temperature' ).html( data.Temperature );
+
+
 }

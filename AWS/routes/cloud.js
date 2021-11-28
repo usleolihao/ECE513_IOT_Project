@@ -42,6 +42,7 @@ router.post( '/read', function ( req, res ) {
 
 router.post( '/report', function ( req, res ) {
     rxData = JSON.parse( req.body.data );
+    //console.log( rxData );
     simulatedClock( rxData );
     res.status( 201 ).json( { status: 'ok' } );
 } );

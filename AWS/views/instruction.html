@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% block title %} {{title}} {%endblock%}
+{% block head %}
+<script>
+$(function() {
+    $("#maincontent-placeholder").load("intro/introduction2.html");
+});
+</script>
+{% endblock %}
+
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="account">Account</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="dashboard" aria-disabled="true">Dashboard</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Instruction</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="devices">Devices</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="edit">Edit Info</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" id="logoutbtn">Logout</a>
+</li>
+{% endblock %}
+
+<!-- 
+<li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+</li> \
+-->
+
+{% block content %}
+<main>
+    <div id="carousel-placeholder"></div>
+    <!-- Marketing messaging and featurettes
+            ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <div class="container marketing">
+        <div id="maincontent-placeholder"></div>
+    </div><!-- /.container -->
+    <!-- /END THE FEATURETTES -->
+    <hr class="featurette-divider">
+    <!-- FOOTER -->
+    <footer class="container">
+        <p class="float-end"><a href="#">Back to top</a></p>
+        <p>&copy; 2021 University of Arizona</p>
+    </footer>
+</main>
+{% endblock %}

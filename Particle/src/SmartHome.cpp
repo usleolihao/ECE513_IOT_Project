@@ -200,7 +200,7 @@ void loop()
 
   if (isnan(hum) || isnan(cel) || isnan(far))
   {
-    Log.info("Failed to read from DHT sensor!");
+    Log.info("{\"msg\":Failed to read from DHT sensor!}");
     return;
   }
 
@@ -224,9 +224,7 @@ void loop()
   if (counter_cloud % (PUBLISH_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_cloud = 0;
-    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f %%,\"Temperature\":%.2f,\"Temperature\":%.2f}",
-                               (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
-                               period, smart_light_analogvalue, door_analogvalue, hum, cel, far);
+    statusStr = String::format("{\"t\":%d,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}", (int)Time.now(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
     if (bPublish)
     {
       Particle.publish("smarthome", statusStr, PRIVATE);

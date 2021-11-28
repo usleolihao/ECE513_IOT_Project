@@ -80,8 +80,7 @@ function smartLightControl( option, value ) {
         }
     };
     txcmd.data.smartlight[ option ] = value;
-
-    console.log( JSON.stringify( txcmd ) );
+    //console.log( JSON.stringify( txcmd ) );
     serailCmd( txcmd );
 }
 
@@ -92,6 +91,6 @@ function toggleLedControl( value ) {
             led: { frequency: value }
         }
     };
-    console.log( JSON.stringify( txcmd ) );
+    //console.log( JSON.stringify( txcmd ) );
     serailCmd( txcmd );
 }
