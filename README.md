@@ -21,7 +21,7 @@ This repertory contains files of `SMART HOME Project`.
 
 ### Video demo information
 
-[link of video demo](#)
+[link of video demo](https://drive.google.com/file/d/1o_tCyV5lNdAILVl7f4SEeocQd3oz1y8E/view?usp=sharing)
 
 ### Particle Device Information
 

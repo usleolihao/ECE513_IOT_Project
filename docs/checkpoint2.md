@@ -44,21 +44,21 @@
 				- [x] User information should be managed by using your database 
 				- [x] You should use token-based authentication
 2. Video demonstration
-	- [ ] Short video demo to show your implementation (10 minutes maximum)
-	- [ ] Should either be hosted on your server or hosted on some other publicly accessible service (e.g., YouTube)
-	- [ ] Show use cases regarding your web application (cloud communication) 
-		- [ ] sign-up/sing-in use cases 
-		- [ ] Device registration use cases 
-		- [ ] Particle cloud use cases (e.g., ping / receiving data)
-	- [ ] Show use cases regarding your local host application (e.g., serial communication) 
-		- [ ] Device connection (i.e., serial port open/close) 
-		- [ ] Display measurement data/brightness/door status 
-		- [ ] Control smart light
-	- [ ] Does not require fancy video editing. Also, does not need to include any verbal description (optional). Focus on showing the overall operations.
+	- [x] Short video demo to show your implementation (10 minutes maximum)
+	- [x] Should either be hosted on your server or hosted on some other publicly accessible service (e.g., YouTube)
+	- [x] Show use cases regarding your web application (cloud communication) 
+		- [x] sign-up/sing-in use cases 
+		- [x] Device registration use cases 
+		- [x] Particle cloud use cases (e.g., ping / receiving data)
+	- [x] Show use cases regarding your local host application (e.g., serial communication) 
+		- [x] Device connection (i.e., serial port open/close) 
+		- [x] Display measurement data/brightness/door status 
+		- [x] Control smart light
+	- [x] Does not require fancy video editing. Also, does not need to include any verbal description (optional). Focus on showing the overall operations.
 3. Documentation
-	- [ ]  Your state machines/state charts for the final implementation (PDF file)
-		- [ ]  i.e., should include all functionalities
-	- [ ]  README file
+	- [x]  Your state machines/state charts for the final implementation (PDF file)
+		- [x]  i.e., should include all functionalities
+	- [x]  README file
 		- [x] Team information (name, email, project level) 
 		- [x] AWS address (i.e., URL) 
 		- [ ] Your video demo information (i.e., where to watch) 
@@ -67,37 +67,37 @@
 			- [x]  Your methods, data sent, response codes, and response data formats (i.e., should provide enough information that on could use the endpoint without needing to refer to the code) 
 		- [x] How to use your systems
 4. Submission (Double check before submit)
-	- [ ] Please prepare the below folder structure for your submission
-	- [ ] Folder structure (where <span style="color: green;">green color</span> text represents a folder)
+	- [x] Please prepare the below folder structure for your submission
+	- [x] Folder structure (where <span style="color: green;">green color</span> text represents a folder)
 		- [x] <span style="color: green;">Particle</span>
-			- [ ] All your code for the particle firmware here
+			- [x] All your code for the particle firmware here
 		- [x] <span style="color: green;">Localhost</span>
-			- [ ] All your code for the localhost
+			- [x] All your code for the localhost
 			- [x] _Should **not** include package-lock.json and node_modules_
 		- [x] <span style="color: green;">AWS</span>
-			- [ ] All your code for your AWS
+			- [x] All your code for your AWS
 			- [x] _Should **not** include package-lock.json and node_modules_
-		- [ ] README.txt
-		- [ ] PDF file for your state machines/state charts
-	- [ ] Submit one single zip file to D2L
-		- [ ] File name: [Your team #]_[Your project level]_[LastName - at least one].zip
-			- [ ] For your team #, see Project teams
+		- [x] README.txt
+		- [x] PDF file for your state machines/state charts
+	- [x] Submit one single zip file to D2L
+		- [x] File name: [Your team #]_[Your project level]_[LastName - at least one].zip
+			- [x] For your team #, see Project teams
 			- (example) 30_ECE513_Hong.zip
-	- [ ] Final project Checkpoint 2 submission (due 11/23, 11:59PM) in Assignments
+	- [x] Final project Checkpoint 2 submission (due 11/28, 11:59PM) in Assignments
 5. Rubric
-	- [ ] State machine / state charts submission: 1 point (but no submission: -1 point)
-	- [ ] Video demo: 1 point (but no video demo: -1 point)
-	- [ ] Code submission: 1 point (but missing one of parts: -1 point)
-	- [ ] Particle device operations: 2 points 
-		- [ ] Localhost related operations: 1 points 
-		- [ ] AWS related operations: 1 points
-	- [ ] Localhost operations: 2 points 
-		- [ ] Display information: 1 points 
-		- [ ] Control: 1 points
-	- [ ]  AWS operations: 3 points 
-		- [ ] Client side: 1 point 
-		- [ ] Database: 1 point 
-		- [ ] Routers: 1 point
+	- [x] State machine / state charts submission: 1 point (but no submission: -1 point)
+	- [x] Video demo: 1 point (but no video demo: -1 point)
+	- [x] Code submission: 1 point (but missing one of parts: -1 point)
+	- [x] Particle device operations: 2 points 
+		- [x] Localhost related operations: 1 points 
+		- [x] AWS related operations: 1 points
+	- [x] Localhost operations: 2 points 
+		- [x] Display information: 1 points 
+		- [x] Control: 1 points
+	- [x]  AWS operations: 3 points 
+		- [x] Client side: 1 point 
+		- [x] Database: 1 point 
+		- [x] Routers: 1 point
 6. Others
 	- If any requirement is not clear, you should post publicly on Q&A document to clarify the requirements. Any clarifications needed will be added to this document and marked as Clarification.
 	- You are also responsible for monitoring the Q&A document for any project requirements and clarifications as well as Project description document.

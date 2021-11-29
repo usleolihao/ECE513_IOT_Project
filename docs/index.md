@@ -13,8 +13,6 @@ The innovative home application is a low-cost IoT-enabled web application for:
 
 ## Todo List
 
-- [ ] Video
-- [ ] Documentation
 
 ## Overview
 
