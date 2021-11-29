@@ -13,7 +13,7 @@ function deleteAccout() {
                 dataType: 'json'
             } )
             .done( function ( data, textStatus, jqXHR ) {
-                localStorage.clear();
+                window.localStorage.clear();
                 alert( data.message );
                 window.location = '/';
             } )
