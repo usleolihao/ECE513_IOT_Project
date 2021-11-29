@@ -1,4 +1,7 @@
 $().ready( function () {
+    if ( !window.localStorage.getItem( "authToken" ) ) {
+        window.location = "login";
+    }
     $( "#toaccount" ).click( function () {
         window.location.replace( "account" );
     } );
