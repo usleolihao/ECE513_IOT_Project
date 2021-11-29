@@ -66,13 +66,14 @@ router.post( '/register', function ( req, res, next ) {
                                 res.status( 400 ).json( { success: false, err: err } );
                             } else {
                                 let msgStr = `Device (id:${req.body.deviceid}) has been registered.`;
-                                res.status( 201 ).json( { success: true, message: msgStr } );
                                 console.log( msgStr );
+                                res.status( 201 ).json( { success: true, message: msgStr } );
+                                
                             }
                         } );
                     } )
                     .catch( err => {
-                        res.status( 201 ).json( { cmd: 'ping', success: false, data: JSON.parse( err.response.text ) } );
+                        res.status( 201 ).json( { cmd: 'ping', success: false, data: JSON.parse( err.response.text ),message: "Wrong deviceid or device API" } );
                     } );
             }
         } );

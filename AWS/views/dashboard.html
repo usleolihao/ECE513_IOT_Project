@@ -22,7 +22,6 @@
 <!-- main script -->
 <script src="javascripts/dashboard.js"></script>
 <script src="javascripts/onlinecomm.js"></script>
-<script src="javascripts/localcomm.js"></script>
 {% endblock %}
 {% block navbar %}
 <li class="nav-item">
@@ -72,15 +71,25 @@
     </ul>
     <ul class="collection with-header">
         <li class="collection-header">
-            <h5>Serial Communication</h5>
+            <span>Online Communication</span>
         </li>
         <li class="collection-item">
-            <span>Online Communication</span>
             <select id="online_device_list">
                 <option selected value="null">Please select your Online Device</option>
             </select>
             <button class="waves-effect waves-light btn" id="onlineping">Ping</button>
-            <a href="instruction"><button class="waves-effect waves-light btn" >Instruction</button></a>
+            <a href="instruction"><button class="waves-effect waves-light btn">Instruction</button></a>
+        </li>
+        <li class="collection-item">
+            <span>Please select variable to read</span>
+            <select id="readvalue">
+                <option selected>Humidity</option>
+                <option>Temperature_Celcius</option>
+                <option>Temperature_Farenheit</option>
+                <option>door_analogvalue</option>
+                <option>smart_light_analogvalue</option>
+            </select>
+            <button class="waves-effect waves-light btn" id="cloudread">Read</button>
         </li>
         <li class="collection-item">
             <span>Online Publish</span>
@@ -99,19 +108,10 @@
                 <textarea id="online_com_status" name="online_com_status" style="width:100%;height:100%" readonly value=""></textarea>
             </div>
         </li>
-        <li class="collection-item">
-            <span>Local Serial Communication</span>
-            <select id="com_ports_list">
-                <option selected value="null">Please select your port</option>
-            </select>
-            <button class="waves-effect waves-light btn" id="btnConnect">Connect</button>
-        </li>
-        <li class="collection-item">
-            <span>COM status:</span>
-            <div style="display:inline-block; width:100%; height: 3rem;">
-                <textarea id="com_status" name="com_status" style="width:100%;height:100%" readonly value=""></textarea>
-            </div>
-            <span id="localsimulatedtime">Local Serial Simulated Clock Here</span>
+    </ul>
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <span>Debug Only: Local Serial Communication</span> <button class="waves-effect waves-light btn" id="showLocal">Click Here</button>
         </li>
     </ul>
     <ul class="collection with-header">

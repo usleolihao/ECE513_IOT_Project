@@ -109,6 +109,14 @@ void cloudCmdProcessing()
     {
       bPublish = iter.value().toBool();
     }
+    else if (iter.name() == "smartlight")
+    {
+      smartLight.cmdProcessing(iter.value());
+    }
+    else if (iter.name() == "led")
+    {
+      toggleLed.cmdProcessing(iter.value());
+    }
   }
   rxCloudCmdStr = "";
 }
@@ -211,7 +219,7 @@ void loop()
   if (counter_cloud % (PUBLISH_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_cloud = 0;
-    statusStr = String::format("{\"t\":%d,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}", (int)Time.now(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
+    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}", (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
     if (bPublish)
     {
       Particle.publish("smarthome", statusStr, PRIVATE);

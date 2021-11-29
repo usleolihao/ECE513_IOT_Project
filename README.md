@@ -68,12 +68,14 @@ The intelligent home application web page for a project monitors the temperature
 
 #### Cloud
 
-| Endpoint      | Description                                                                    |
-|:--------------|:-------------------------------------------------------------------------------|
-| cloud/ping    | Ping the device if device is Online otherwise return 201 with false of success |
-| cloud/read    | Read value from device                                                         |
-| cloud/report  | Device sends value to server when device published                             |
-| cloud/publish | Send a request to publish device                                               |
+| Endpoint      | Description                                                                                       |
+|:--------------|:--------------------------------------------------------------------------------------------------|
+| cloud/ping    | Ping the device if device is Online otherwise return 201 with failed operation, 200 as successful |
+| cloud/read    | Read value from device                                                                            |
+| cloud/report  | Device sends value to server when device published                                                |
+| cloud/publish | Send a request to publish device                                                                  |
+| cloud/value   | Get method to request a value from cloud                                                          |
+| cloud/write   | send a write request for changing value return 201 with failed operation, 200 as successful       |
 
 
 #### Local Serial

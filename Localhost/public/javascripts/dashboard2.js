@@ -1,4 +1,4 @@
-var OnlineInterval = null;
+var myInterval = null;
 var guiUpdated = false;
 var datetime = null,
     date = null;
@@ -8,37 +8,16 @@ var update = function () {
     datetime.html( date.format( 'dddd, MMMM Do YYYY, h:mm:ss a' ) );
 };
 
-
-const weather = {
-    "cloud": 'fa-cloud',
-    "cloud-rain": 'fa-cloud-rain',
-    "cloud-sun": 'fa-cloud-sun',
-    "sun": 'fa-sun',
-    "wind": 'fa-wind',
-    "snowflake": 'fa-snowflake'
-};
-
-function updateWeather() {
-    $( '#weather' ).html( '<i class="fas fa-sun"></i>' );
-}
-
-
-
 $( function () {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialize the GUI
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    initRangeSliders();
-
     //Local Communication
-    $( '#showLocal' ).click( function () {
-        window.location = "localcommunication.html";
-    } );
-
-    //Online Communication
-    initialCloudbtns();
+    initRangeSliders();
+    serailCmd( { cmd: "scan" } );
+    initialLocalbtns();
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // automatic update time by seconds
@@ -46,54 +25,11 @@ $( function () {
     datetime = $( '#curTimeReal' )
     update();
     setInterval( update, 1000 );
-    updateWeather();
+
 } );
 
-
-
-function initialCloudbtns() {
-    //load Devices and add into list
-    getOnlineDevices();
-
-    //set Ping button
-    $( "#onlineping" ).click( function () {
-        let device = $( '#online_device_list' ).find( ":selected" ).val();
-        device = JSON.parse( device );
-        //console.log( device );
-        onlineCmd( {
-            cmd: "ping",
-            deviceid: device.id,
-            deviceapi: device.api
-        } );
-    } );
-
-    $( "#publishonoff" ).click( function () {
-        let On = $( "#publishonoff" ).is( ':checked' );
-        console.log( On );
-        // check dievice is Online first later.
-
-        let device = $( '#online_device_list' ).find( ":selected" ).val();
-        device = JSON.parse( device );
-        onlineCmd( {
-            cmd: "publish",
-            deviceid: device.id,
-            deviceapi: device.api,
-            publish: { publish: On }
-        } );
-
-    } );
-
-    $( '#cloudread' ).click( function () {
-        let device = $( '#online_device_list' ).find( ":selected" ).val();
-        let valuetoread = $( '#readvalue' ).find( ":selected" ).val();
-        device = JSON.parse( device );
-        onlineCmd( {
-            cmd: "value",
-            deviceid: device.id,
-            deviceapi: device.api,
-            variable: valuetoread
-        } );
-    } );
+function initialLocalbtns() {
+    $( '#btnConnect' ).click( connectDisconnect );
 }
 
 function initRangeSliders() {
@@ -143,12 +79,9 @@ function updateGUI( data ) {
             $( '#curBrightness' ).html( data.light.b );
         }
     }
-    if ( "simclockOnline" in data ) $( '#onlinesimulatedtime' ).html( data.simclockOnline );
     if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
     //door senosr
     if ( "door_sensor" in data ) $( '#door_status' ).html( "sensor(" + data.door_sensor + ")" );
     if ( "Humidity" in data ) $( '#Humidity' ).html( data.Humidity + "%" );
-    if ( "Temperature" in data ) $( '#Temperature' ).html( data.Temperature + "°" );
-
-
+    if ( "Temperature" in data ) $( '#Temperature' ).html( data.Temperature );
 }

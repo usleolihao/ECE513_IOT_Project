@@ -47,6 +47,47 @@ router.post( '/report', function ( req, res ) {
     res.status( 201 ).json( { status: 'ok' } );
 } );
 
+//curl "https://api.particle.io/v1/devices/3d004f000f51353338363333/smart_light_analogvalue?access_token=c5f4cc8be75dbc10720a259d2219acc0c82e5caf"
+router.post( '/value', function ( req, res ) {
+    request
+        .get( "https://api.particle.io/v1/devices/" + req.body.deviceid + "/" + req.body.variable + "?access_token=" + req.body.deviceapi )
+        .send()
+        .then( response => {
+            let variable = req.body.variable;
+            let result = JSON.parse( response.text ).result;
+            if ( req.body.variable === "Temperature_Farenheit" || req.body.variable === "Temperature_Celcius" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { Temperature: result }, success: true } );
+            } else if ( req.body.variable === "Humidity" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { Humidity: result }, success: true } );
+            } else if ( req.body.variable === "door_analogvalue" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { door_sensor: result }, success: true } );
+            } else if ( req.body.variable === "smart_light_analogvalue" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { light: { s: result } }, success: true } );
+            }
+
+        } )
+        .catch( err => {
+            console.log( err );
+            res.status( 201 ).json( { cmd: 'value', subcmd: req.body.variable, success: false } );
+        } );
+} );
+
+router.post( '/write', function ( req, res ) {
+    console.log( req.body.data );
+    request
+        .post( "https://api.particle.io/v1/devices/" + req.body.deviceid + "/cloudcmd" )
+        .set( 'Authorization', 'Bearer ' + req.body.deviceapi )
+        .set( 'Accept', 'application/json' )
+        .set( 'Content-Type', 'application/json' )
+        .send( { args: JSON.stringify( req.body.data ) } )
+        .then( response => {
+            res.status( 200 ).json( { cmd: 'write', subcmd: req.body.data, success: true } );
+        } )
+        .catch( err => {
+            res.status( 201 ).json( { cmd: 'write', subcmd: req.body.data, error: err, success: false } );
+        } );
+} );
+
 
 router.post( '/publish', function ( req, res ) {
     //console.log( req.body.publish );

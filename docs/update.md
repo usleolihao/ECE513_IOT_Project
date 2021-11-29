@@ -1,3 +1,13 @@
+### v1.10 11/28/2021
+
+- Updated instruction of Webhook
+- Removed local serial from Dashboard
+- Added reading single variable for humidity, temperature, sensors
+- Added remoting control of smart light and sensor value
+- update Localhost for local serial communication
+- update Readme.md
+- fixed bugs
+
 ### v1.09 11/27/2021
 
 3. AWS

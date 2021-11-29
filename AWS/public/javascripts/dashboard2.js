@@ -80,4 +80,8 @@ function updateGUI( data ) {
         }
     }
     if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
+    //door senosr
+    if ( "door_sensor" in data ) $( '#door_status' ).html( "sensor(" + data.door_sensor + ")" );
+    if ( "Humidity" in data ) $( '#Humidity' ).html( data.Humidity + "%" );
+    if ( "Temperature" in data ) $( '#Temperature' ).html( data.Temperature );
 }

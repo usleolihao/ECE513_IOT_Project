@@ -80,6 +80,15 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             }
 
             $( '#online_com_status' ).html( msg );
+        } else if ( data.cmd == "value" ) {
+            //console.log( data );
+            if ( data.success ) {
+                $( '#online_com_status' ).html( "Dead variable successfully." );
+                updateGUI( data.data );
+            } else {
+                $( '#online_com_status' ).html( data );
+            }
+
         }
         //else if ( data.cmd === "open" ) finishOpenClose( data );
         //else if ( data.cmd === "close" ) finishOpenClose( data );
@@ -91,11 +100,41 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             // update GUI
             updateGUI( data.data );
         } else {
-            $( '#online_com_status' ).html( JSON.stringify( data, null, 2 ) );
+            $( '#cmdStatusData' ).html( JSON.stringify( data, null, 2 ) );
         }
     }
 }
 
+function smartLightControl( option, value ) {
+    let device = $( '#online_device_list' ).find( ":selected" ).val();
+    device = JSON.parse( device );
+    let txcmd = {
+        cmd: "write",
+        deviceid: device.id,
+        deviceapi: device.api,
+        data: {
+            smartlight: {}
+        }
+    };
+    txcmd.data.smartlight[ option ] = value;
+    //console.log( JSON.stringify( txcmd ) );
+    onlineCmd( txcmd );
+}
+
+function toggleLedControl( value ) {
+    let device = $( '#online_device_list' ).find( ":selected" ).val();
+    device = JSON.parse( device );
+    let txcmd = {
+        cmd: "write",
+        deviceid: device.id,
+        deviceapi: device.api,
+        data: {
+            led: { frequency: value }
+        }
+    };
+    //console.log( JSON.stringify( txcmd ) );
+    onlineCmd( txcmd );
+}
 
 function cloudFailure( jqXHR, textStatus, errorThrown ) {
     $( '#online_com_status' ).html( JSON.stringify( jqXHR, null, 2 ) );

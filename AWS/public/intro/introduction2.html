@@ -11,11 +11,12 @@
 <hr class="featurette-divider">
 <div class="row featurette">
     <div class="col-md-7">
-        <h2 class="featurette-heading">① In your particle firmware 
+        <h2 class="featurette-heading">① Get Your Device ID and ACCESS Token from Particle
             <!-- <span class="text-muted">It’ll blow your mind.</span> -->
         </h2>
-        <p class="lead">Publish an event through the Particle Device Cloud that will be forwarded to all registered listeners, such as callbacks, subscribed streams of Server-Sent Events, and other devices listening</p>
-        <p>▶ Particle.publish() - Publish an event through the Particle Device Cloud that will be forwarded to all registered listeners, such as callbacks, subscribed streams of Server-Sent Events, and other devices listening</p>
+        <p class="lead">Connect your the Particle Device first</p>
+        <p>▶ particle list - List devices of yours are Online on Particle Cloud</p>
+        <p>▶ particle token create - Create a access token for your device through Particle CLoud</p>
     </div>
     <div class="col-md-5">
         <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src='images/i2.png'>
@@ -26,6 +27,11 @@
     <div class="col-md-7 order-md-2">
         <h2 class="featurette-heading">② How to create your webhook???</h2>
         <p class="lead">The hub for managing your webhooks is the <a href="https://console.particle.io/">Particle Console</a>. Log into your console and click on the Integrations tab. If you have created any webhooks in the past, they will appear here. Click on "New Integration" -> "Webhook" to get started.</p>
+        <p> Event Name: smarthome
+            <br>URL: http://ec2-54-151-67-43.us-west-1.compute.amazonaws.com/cloud/report
+            <br> Request Type: POST
+            <br> Device: Your Device
+            <br> Status: Enabled</p>
     </div>
     <div class="col-md-5 order-md-1">
         <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src='images/i3.png'>
@@ -41,7 +47,7 @@
         </p>
         <p class="lead">
             ▶ Variables:
-            <br>- Simulated Clock 
+            <br>- Simulated Clock
             <br>- Door Status
             <br>- Light Sensor Value
             <br>- Temperature
