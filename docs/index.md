@@ -10,6 +10,7 @@ The innovative home application is a low-cost IoT-enabled web application for:
 - [Project Home Portal](https://ec2-54-151-67-43.us-west-1.compute.amazonaws.com/)
 - [Check point 2](checkpoint2.md)
 - [Updates History](update.md)
+- [link of video demo](https://drive.google.com/file/d/1o_tCyV5lNdAILVl7f4SEeocQd3oz1y8E/view?usp=sharing)
 
 ## Todo List
 
