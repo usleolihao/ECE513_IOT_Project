@@ -1,3 +1,7 @@
+### v1.11 12/07/2021
+
+- Removed local serial from AWS
+
 ### v1.10 11/28/2021
 
 - Updated instruction of Webhook
