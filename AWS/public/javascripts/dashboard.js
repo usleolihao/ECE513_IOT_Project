@@ -8,7 +8,6 @@ var update = function () {
     datetime.html( date.format( 'dddd, MMMM Do YYYY, h:mm:ss a' ) );
 };
 
-
 const weather = {
     "cloud": 'fa-cloud',
     "cloud-rain": 'fa-cloud-rain',
@@ -35,11 +34,6 @@ $( function () {
 
     initRangeSliders();
 
-    //Local Communication
-    $( '#showLocal' ).click( function () {
-        window.location = "localcommunication.html";
-    } );
-
     //Online Communication
     initialCloudbtns();
 
@@ -49,7 +43,7 @@ $( function () {
     datetime = $( '#curTimeReal' )
     update();
     setInterval( update, 1000 );
-    updateWeather();
+
 } );
 
 

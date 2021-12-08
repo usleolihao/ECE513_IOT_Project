@@ -5,7 +5,7 @@ body {
 }
 
 
-body>div.centerDiv h4 {
+body>div.centerDiv h2 {
     color: skyblue;
 }
 
@@ -31,9 +31,27 @@ div.slideroffsets {
     margin-bottom: 1rem;
 }
 
-i.fa-cloud{
+i.fa-cloud {
     color: skyblue;
 }
-i.fa-sun{
+
+i.fa-sun {
     color: red;
+}
+
+.controlpanel>.modulized{
+    display:block;
+    padding-bottom: 5px;
+    border-top: 1px solid #999;
+    height: auto;
+}
+
+.controlpanel>.modulized>li{
+    float: left;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 3px;
+    background-color: lightcyan;
+    width: auto;
 }
