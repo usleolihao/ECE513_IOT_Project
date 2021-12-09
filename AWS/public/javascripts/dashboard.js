@@ -4,65 +4,67 @@ var datetime = null,
     date = null;
 
 var update = function () {
-    date = moment( new Date() )
+    date = moment( new Date() );
     datetime.html( date.format( 'dddd, MMMM Do YYYY, h:mm:ss a' ) );
 };
-
-const weather = {
-    "cloud": 'fa-cloud',
-    "cloud-rain": 'fa-cloud-rain',
-    "cloud-sun": 'fa-cloud-sun',
-    "sun": 'fa-sun',
-    "wind": 'fa-wind',
-    "snowflake": 'fa-snowflake'
-};
-
-function updateWeather() {
-    $( '#weather' ).html( '<i class="fas fa-sun"></i>' );
-}
-
-
 
 $( function () {
 
     if ( !window.localStorage.getItem( "authToken" ) ) {
         window.location = "login";
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialize the GUI
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    initialPanelModules();
     initRangeSliders();
-
     //Online Communication
     initialCloudbtns();
 
+    initial_widgets();
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // automatic update time by seconds
+    // automatic updates
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     datetime = $( '#curTimeReal' )
     update();
+    // updates time by second
     setInterval( update, 1000 );
-
+    // updates weather by hour
+    setInterval( checkweather, 3600000 );
 } );
 
+async function initial_widgets() {
+    setTimeout( () => { pingonce(); }, 1000 );
+    setTimeout( () => {
+        if ( $( '#online_com_status' ).text() === "Device is Online" ) {
+            cloudreadall();
+        } else {
+            alert( "Your device is Offline!" );
+        }
+    }, 2000 );
+}
 
+function initialPanelModules() {
+    weather_module();
+    temperature_module();
+    LED_module();
+    humidity_module();
+    doorstatus_module();
+    power_module();
+    AC_module();
+    Thermostat_module();
+    historyTH_module();
+    warning_module();
+}
 
 function initialCloudbtns() {
     //load Devices and add into list
     getOnlineDevices();
 
     //set Ping button
-    $( "#onlineping" ).click( function () {
-        let device = $( '#online_device_list' ).find( ":selected" ).val();
-        device = JSON.parse( device );
-        //console.log( device );
-        onlineCmd( {
-            cmd: "ping",
-            deviceid: device.id,
-            deviceapi: device.api
-        } );
-    } );
+    $( "#onlineping" ).click( pingonce );
 
     $( "#publishonoff" ).click( function () {
         let On = $( "#publishonoff" ).is( ':checked' );
@@ -89,6 +91,32 @@ function initialCloudbtns() {
             deviceid: device.id,
             deviceapi: device.api,
             variable: valuetoread
+        } );
+    } );
+
+    $( '#cloudreadall' ).click( cloudreadall );
+}
+
+function pingonce() {
+    let device = $( '#online_device_list' ).find( ":selected" ).val();
+    device = JSON.parse( device );
+    //console.log( device );
+    onlineCmd( {
+        cmd: "ping",
+        deviceid: device.id,
+        deviceapi: device.api
+    } );
+}
+
+function cloudreadall() {
+    let device = $( '#online_device_list' ).find( ":selected" ).val();
+    device = JSON.parse( device );
+    $( '#readvalue option' ).each( function () {
+        onlineCmd( {
+            cmd: "value",
+            deviceid: device.id,
+            deviceapi: device.api,
+            variable: $( this ).val()
         } );
     } );
 }
@@ -120,9 +148,14 @@ function initRangeSliders() {
 }
 
 function updateGUI( data ) {
+    console.log( data );
     if ( !guiUpdated ) {
         if ( "light" in data ) {
-            if ( "L0" in data.light ) $( '#smartlightonoff' ).prop( "checked", data.light.L0 ).change();
+            if ( "L0" in data.light ) {
+                let light_icon = data.light.L0 ? led_on : led_off;
+                $( "#smartlightonoff" ).attr( "src", light_icon );
+                //$( '#smartlightonoff' ).prop( "checked",  ).change();
+            }
             if ( "L1" in data.light ) $( '#smartlightMode' ).prop( "checked", data.light.L1 ).change();
             if ( "b" in data.light ) $( '#birghtnessSlider' ).val( data.light.b ).change();
             if ( "m" in data.light ) $( '#sensorMinSlider' ).val( data.light.m ).change();
@@ -142,13 +175,15 @@ function updateGUI( data ) {
     }
     if ( "simclockOnline" in data ) $( '#onlinesimulatedtime' ).html( data.simclockOnline );
     if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
-    //door senosr
+
+    //updated door senosr widget 2.0
     if ( "door_sensor" in data ) {
-        if ( data.door_sensor > 500 ) $( '#door_status' ).html( "Open" );
-        else $( '#door_status' ).html( "Close" );
+        if ( data.door_sensor > 500 ) $( '#doorstatus' ).html( "Open" );
+        else $( '#doorstatus' ).html( "Close" );
     }
-    if ( "Humidity" in data ) $( '#Humidity' ).html( data.Humidity + "%" );
-    if ( "Temperature" in data ) $( '#Temperature' ).html( data.Temperature + "°" );
-
-
+    // updated humidity widget 2.0
+    if ( "Humidity" in data ) $( '#humidity' ).html( data.Humidity );
+    // updated Temperature widget 2.0
+    if ( "TemperatureF" in data ) $( '#Temperature_Farenheit' ).html( data.TemperatureF ? data.TemperatureF : "fail" );
+    if ( "TemperatureC" in data ) $( '#Temperature_Celcius' ).html( data.TemperatureC ? data.TemperatureC : "fail" );
 }

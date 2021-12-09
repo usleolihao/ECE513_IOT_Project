@@ -3,6 +3,7 @@ var router = express.Router();
 const jwt = require( "jwt-simple" );
 const bcrypt = require( "bcryptjs" );
 const fs = require( 'fs' );
+const fetch = require( "node-fetch" );
 
 const User = require( "../models/user" );
 
@@ -281,7 +282,7 @@ router.post( '/deleteaccount', function ( req, res ) {
                         res.status( 400 ).json( { success: false, message: "Error contacting DB. Please contact support." } );
                     }
                     console.log( "Deleted " + result.deletedCount );
-                    res.status( 200 ).json( { success: true, message: "User has been deleted "} );
+                    res.status( 200 ).json( { success: true, message: "User has been deleted " } );
 
                 } );
             } else {
@@ -294,5 +295,54 @@ router.post( '/deleteaccount', function ( req, res ) {
     }
 
 } );
+
+
+router.post( '/weather', function ( req, res ) {
+    if ( !req.headers[ "x-auth" ] ) {
+        return res.status( 401 ).json( { success: false, message: "Missing X-Auth header." } );
+    }
+
+    // X-Auth should contain the token 
+    const token = req.headers[ "x-auth" ];
+    //console.log(token);
+
+    try {
+        // decode token
+        const decoded = jwt.decode( token, secret );
+        //console.log( decoded );
+
+        // Send back account information
+        User.findOne( { email: decoded.email }, function ( err, user ) {
+            if ( err ) {
+                res.status( 400 ).json( { success: false, message: "Error contacting DB. Please contact support." } );
+            } else {
+                const zip = user.zip;
+                //console.log( zip );
+
+                const params = new URLSearchParams( {
+                    zip: zip,
+                    units: "imperial",
+                    appid: "6f3938f149acae38bb8daa7c60d6558e"
+                } );
+                fetch( "http://api.openweathermap.org/data/2.5/weather?" + params )
+                    .then( response => response.json() )
+                    .then( data => {
+                        const locals = {
+                            data: data,
+                            zip: zip,
+                            cmd: 'weather'
+                        };
+                        //console.log( locals );
+                        res.status( 200 ).json( { success: true, message: locals } );
+                    } )
+                    .catch( error => res.status( 201 ).json( { success: false, message: error } ) );
+            }
+        } );
+    } catch ( ex ) {
+        // Token was invalid
+        res.status( 401 ).json( { success: false, message: "Invalid authentication token." } );
+    }
+} );
+
 
 module.exports = router;

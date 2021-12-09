@@ -1,6 +1,45 @@
+### v2.0.0 12/08/2021
+
+- Particle
+	- add variables of ac/door/power
+	- if failed to read DHT, set value to 0
+	- initialize all variables
+- DASHBOARD 2.0.0
+	- Read Temperature status
+	- Read Humidity status
+	- Read Door status
+	- Thermostat widget
+		- ac mode interface
+		- (auto mode)/off, off/Cool/Heat
+	- Smartlight widget
+		- smartlight animation
+		- write on/off smart light
+	- Power consumption widget
+	- AC/Heat widget
+	- Temp/Hum History widget
+
+
 ### v1.11 12/07/2021
 
 - Removed local serial from AWS
+- Updated README
+- DASHBOARD 2.0.0
+	- hidden Smart Light
+	- hidden CMD Status Data Output
+	- hidden Oline Communication
+	- changed to information part to modules
+	- changed to dynamic creation of widget
+		- weather_module();
+    	- temperature_module()
+    		- get result from third party API
+    		- updates Highest/Lowest/Current Temperature
+    		- updates Weather Icon
+    		- updates Humidity
+    		- updates City and Zip
+    	- humidity_module()
+    	- doorstatus_module()
+-  Server site
+	- add get method for third party weather API
 
 ### v1.10 11/28/2021
 

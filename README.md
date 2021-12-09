@@ -157,6 +157,8 @@ Smart Home
 
 ### Installation
 
+#### setup AWS
+
 ```bash
 # go to directory of AWS server
 cd AWS
@@ -166,6 +168,17 @@ npm install
 npm start
 # Debug mode
 Debug=AWS:* npm start
+```
+
+#### setup Localhost
+
+```bash
+# go to directory of Localhost
+cd Localhost
+# install dependencies
+npm install
+# run local serial communication
+node Localhost.js
 ```
 
 

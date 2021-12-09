@@ -48,9 +48,14 @@ function onlineCmd( data ) {
         url: '/cloud/' + data.cmd,
         method: ajaxMethod,
         contentType: 'application/json',
+        headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
         data: JSON.stringify( data ),
         dataType: 'json'
     } ).done( cloudSuccess ).fail( cloudFailure );
+}
+
+function cloudFailure( jqXHR, textStatus, errorThrown ) {
+    $( '#online_com_status' ).html( JSON.stringify( jqXHR, null, 2 ) );
 }
 
 function cloudSuccess( data, textStatus, jqXHR ) {
@@ -83,7 +88,7 @@ function cloudSuccess( data, textStatus, jqXHR ) {
         } else if ( data.cmd == "value" ) {
             //console.log( data );
             if ( data.success ) {
-                $( '#online_com_status' ).html( "Dead variable successfully." );
+                $( '#online_com_status' ).html( "Read variable successfully." );
                 updateGUI( data.data );
             } else {
                 $( '#online_com_status' ).html( data );
@@ -99,8 +104,21 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             document.getElementById( "rdData" ).scrollTop = document.getElementById( "rdData" ).scrollHeight;
             // update GUI
             updateGUI( data.data );
+        } else if ( data.cmd === "write" ) {
+            if ( "smartlight" in data.subcmd ) {
+                //console.log( data );
+                if ( !data.success ) {
+                    let res = JSON.parse( data.error.response.text );
+                    $( "#smartlightonoff" ).attr( "src", led_off );
+                    alert( res.error );
+                } else {
+                    let light_icon = data.subcmd.smartlight.on ? led_on : led_off;
+                    $( "#smartlightonoff" ).attr( "src", light_icon );
+                }
+            }
         } else {
             $( '#cmdStatusData' ).html( JSON.stringify( data, null, 2 ) );
+
         }
     }
 }
@@ -134,8 +152,4 @@ function toggleLedControl( value ) {
     };
     //console.log( JSON.stringify( txcmd ) );
     onlineCmd( txcmd );
-}
-
-function cloudFailure( jqXHR, textStatus, errorThrown ) {
-    $( '#online_com_status' ).html( JSON.stringify( jqXHR, null, 2 ) );
 }
