@@ -56,6 +56,13 @@ String rxCloudCmdStr; // receive command via internet
 String statusStr;
 uint8_t ledHighLow;
 
+// Variables for Thermostat/Power consumption/door status
+int acmode;         // 0: OFF, 1:Cool, 2: Heat, 3:Auto
+double actemp;      // desired temperature
+bool doorstatus;    // true for open, false for close
+long door_opentime; // calculated door open time if longer than 10 mins warning
+double power_consumption;
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Serial Cmd Processing
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,12 +149,21 @@ void setup()
   // Put initialization like pinMode and begin functions here.
   pinMode(LED, OUTPUT);
   RGB.control(true);
-  RGB.color(255, 255, 255); // default color
+  RGB.color(RGB_R_DEAULT, RGB_G_DEAULT, RGB_B_DEAULT); // default color
   counter_serial = 0;
   counter_cloud = 0;
   cel = 0;
   far = 0;
   hum = 0;
+  // 0: OFF, 1:Cool, 2: Heat, 3:Auto
+  acmode = 0;        
+  // desired temperature
+  actemp = 0;            
+  // true for open, false for close
+  doorstatus = false; 
+  // calculated door open time if longer than 10 mins warning
+  door_opentime = 0; 
+  power_consumption = 0;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Cloud Part
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,6 +177,11 @@ void setup()
   Particle.variable("Temperature_Celcius", cel);
   Particle.variable("Temperature_Farenheit", far);
   Particle.variable("Humidity", hum);
+  Particle.variable("acmode", acmode);
+  Particle.variable("actemp", actemp);
+  Particle.variable("doorstatus", doorstatus);
+  Particle.variable("doorduration", door_opentime);
+  Particle.variable("power", power_consumption);
   // remote control
   Particle.function("cloudcmd", updateRxCmd);
   // Subscribe to the webhook response event
@@ -193,10 +214,21 @@ void loop()
   // Read Humidity as %
   hum = dht.getHumidity();
 
-  if (isnan(hum) || isnan(cel) || isnan(far))
+  // if failed to read value, set the value to 0 to avoid error
+  if (isnan(hum))
   {
-    Log.info("{\"msg\":Failed to read from DHT sensor!}");
-    return;
+    Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
+    hum = 0;
+  }
+  else if (isnan(cel))
+  {
+    Log.info("{\"msg\":Failed to read celcius from DHT sensor!}");
+    cel = 0;
+  }
+  else if (isnan(far))
+  {
+    Log.info("{\"msg\":Failed to read farenheit from DHT sensor!}");
+    far = 0;
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -206,7 +238,7 @@ void loop()
   if (counter_serial % (SERAIL_COMM_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_serial = 0;
-    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}",
+    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f}",
                   (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
                   period, smart_light_analogvalue, door_analogvalue, hum, cel, far);
     Serial.println();
@@ -219,7 +251,7 @@ void loop()
   if (counter_cloud % (PUBLISH_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_cloud = 0;
-    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"Temperature\":%.2f,\"Temperature\":%.2f}", (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
+    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f}", (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
     if (bPublish)
     {
       Particle.publish("smarthome", statusStr, PRIVATE);

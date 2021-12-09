@@ -68,7 +68,6 @@ app.use( '/user', usersRouter );
 app.use( '/device', deviceRouter );
 app.use( '/cloud', cloudRouter );
 
-
 // catch 404 and forward to error handler
 app.use( function ( req, res, next ) {
     next( createError( 404 ) );

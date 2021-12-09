@@ -55,8 +55,10 @@ router.post( '/value', function ( req, res ) {
         .then( response => {
             let variable = req.body.variable;
             let result = JSON.parse( response.text ).result;
-            if ( req.body.variable === "Temperature_Farenheit" || req.body.variable === "Temperature_Celcius" ) {
-                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { Temperature: result }, success: true } );
+            if ( req.body.variable === "Temperature_Farenheit" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { TemperatureF: result.toFixed( 2 ) }, success: true } );
+            } else if ( req.body.variable === "Temperature_Celcius" ) {
+                res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { TemperatureC: result }, success: true } );
             } else if ( req.body.variable === "Humidity" ) {
                 res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { Humidity: result }, success: true } );
             } else if ( req.body.variable === "door_analogvalue" ) {
@@ -64,7 +66,6 @@ router.post( '/value', function ( req, res ) {
             } else if ( req.body.variable === "smart_light_analogvalue" ) {
                 res.status( 200 ).json( { cmd: 'value', subcmd: variable, data: { light: { s: result } }, success: true } );
             }
-
         } )
         .catch( err => {
             console.log( err );
