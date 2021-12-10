@@ -98,14 +98,19 @@ function initialCloudbtns() {
 }
 
 function pingonce() {
-    let device = $( '#online_device_list' ).find( ":selected" ).val();
-    device = JSON.parse( device );
-    //console.log( device );
-    onlineCmd( {
-        cmd: "ping",
-        deviceid: device.id,
-        deviceapi: device.api
-    } );
+    try {
+        let device = $( '#online_device_list' ).find( ":selected" ).val();
+        device = JSON.parse( device );
+        //console.log( device );
+        onlineCmd( {
+            cmd: "ping",
+            deviceid: device.id,
+            deviceapi: device.api
+        } );
+    } catch ( err ) {
+        //console.log( err );
+        alert( "No available device." );
+    }
 }
 
 function cloudreadall() {

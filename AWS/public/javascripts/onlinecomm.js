@@ -124,19 +124,26 @@ function cloudSuccess( data, textStatus, jqXHR ) {
 }
 
 function smartLightControl( option, value ) {
-    let device = $( '#online_device_list' ).find( ":selected" ).val();
-    device = JSON.parse( device );
-    let txcmd = {
-        cmd: "write",
-        deviceid: device.id,
-        deviceapi: device.api,
-        data: {
-            smartlight: {}
-        }
-    };
-    txcmd.data.smartlight[ option ] = value;
-    //console.log( JSON.stringify( txcmd ) );
-    onlineCmd( txcmd );
+    try {
+        let device = $( '#online_device_list' ).find( ":selected" ).val();
+        device = JSON.parse( device );
+        let txcmd = {
+            cmd: "write",
+            deviceid: device.id,
+            deviceapi: device.api,
+            data: {
+                smartlight: {}
+            }
+        };
+        txcmd.data.smartlight[ option ] = value;
+        //console.log( JSON.stringify( txcmd ) );
+        onlineCmd( txcmd );
+    } catch ( err ) {
+        //console.log( err );
+        alert( "No available device." );
+        window.location = 'device';
+    }
+
 }
 
 function toggleLedControl( value ) {

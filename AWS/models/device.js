@@ -1,4 +1,4 @@
-// models/user.js
+// models/device.js
 const db = require( "../db" );
 const mongoose = require( "mongoose" )
 

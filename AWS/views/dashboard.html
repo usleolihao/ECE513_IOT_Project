@@ -110,14 +110,14 @@
                     </label>
                 </div>
                 <div class="toggleswitch">
-                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightbed">
+                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightbed" onchange="smartLightControl('bedtime', this.checked)">
                     <label class="toggleswitch-label" for="smartlightbed">
                         <span class="toggleswitch-inner bedtimeSwitchText"></span>
                         <span class="toggleswitch-switch"></span>
                     </label>
                 </div>
                 <div class="toggleswitch">
-                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightwake">
+                    <input type="checkbox" name="toggleswitch" class="toggleswitch-checkbox" id="smartlightwake" onchange="smartLightControl('wakeup', this.checked)">
                     <label class="toggleswitch-label" for="smartlightwake">
                         <span class="toggleswitch-inner wakeupSwitchText"></span>
                         <span class="toggleswitch-switch"></span>

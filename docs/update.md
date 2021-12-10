@@ -1,3 +1,22 @@
+### v2.0.1 12/09/2021
+
+- Localhost
+	- [ ] Updated localhost GUI
+	- [ ] Updated loading values
+- DASHBOARD
+	- catch error when no device found
+	- History chart
+	- weakup/bedtime mode for light
+- AWS
+	- history model
+	- history router
+		- history REST API frame
+	- [ ] save a history record
+- Particle
+	- [ ] varaible
+	- [ ] thermostat
+	- [ ] power consumption
+
 ### v2.0.0 12/08/2021
 
 - Particle

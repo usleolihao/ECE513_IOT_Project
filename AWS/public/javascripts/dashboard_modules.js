@@ -179,7 +179,7 @@ function Thermostat_module() {
                 .attr( "type", "radio" )
                 .attr( "name", "ac_mode" )
                 .attr( "value", "off" )
-                .attr('checked', 'checked')
+                .attr( 'checked', 'checked' )
             ).append(
                 $( "<label/>" )
                 .addClass( "acmode ac_off" )
@@ -239,6 +239,130 @@ function Thermostat_module() {
     );
 }
 
+function getRandomInt( min, max ) {
+    min = Math.ceil( min );
+    max = Math.floor( max );
+    return Math.floor( Math.random() * ( max - min ) + min ); //The maximum is exclusive and the minimum is inclusive
+}
+
+var hourlabels = [];
+var hourtemp = [];
+var hourhum = [];
+var hourpower = [];
+var daylabels = [];
+var daytemp = [];
+var dayhum = [];
+var daypower = [];
+var weeklabels = [];
+var weektemp = [];
+var weekhum = [];
+var weekpower = [];
+
+for ( var i = 0; i < 24 + 1; i++ ) {
+    hourlabels.push( i.toString() );
+    hourtemp.push(getRandomInt(50,105));
+    hourhum.push(getRandomInt(0,100));
+    hourpower.push(getRandomInt(5,30));
+}
+
+for ( var i = 0; i < 30 + 1; i++ ) {
+    daylabels.push( i.toString() );
+    daytemp.push(getRandomInt(50,105));
+    dayhum.push(getRandomInt(0,100));
+    daypower.push(getRandomInt(5,30));
+}
+
+for ( var i = 0; i < 4 + 1; i++ ) {
+    weeklabels.push( i.toString() );
+    weektemp.push(getRandomInt(50,105));
+    weekhum.push(getRandomInt(0,100));
+    weekpower.push(getRandomInt(5,30));
+}
+
+var hourdata = {
+    labels: hourlabels,
+    datasets: [ {
+            label: 'Temperature',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: hourtemp,
+        },
+        {
+            label: 'Humidity',
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            data: hourhum,
+        }, {
+            label: 'Power Used',
+            backgroundColor: 'rgb(255, 205, 86)',
+            borderColor: 'rgb(255, 205, 86)',
+            data: hourpower,
+        }
+    ]
+};
+
+var daydata = {
+    labels: daylabels,
+    datasets: [ {
+            label: 'Temperature',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: daytemp,
+        },
+        {
+            label: 'Humidity',
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            data: dayhum,
+        }, {
+            label: 'Power Used',
+            backgroundColor: 'rgb(255, 205, 86)',
+            borderColor: 'rgb(255, 205, 86)',
+            data: daypower,
+        }
+    ]
+};
+
+var weekdata = {
+    labels: weeklabels,
+    datasets: [ {
+            label: 'Temperature',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: weektemp,
+        },
+        {
+            label: 'Humidity',
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            data: weekhum,
+        }, {
+            label: 'Power Used',
+            backgroundColor: 'rgb(255, 205, 86)',
+            borderColor: 'rgb(255, 205, 86)',
+            data: weekpower,
+        }
+    ]
+};
+
+const hourconfig = {
+    type: 'line',
+    data: hourdata,
+    options: {}
+};
+
+const dayconfig = {
+    type: 'line',
+    data: daydata,
+    options: {}
+};
+
+const weekconfig = {
+    type: 'line',
+    data: weekdata,
+    options: {}
+};
+
 function historyTH_module() {
     $( "div#subpanel1" ).append(
         $( '<div/>' )
@@ -250,19 +374,37 @@ function historyTH_module() {
             //.attr( "id", "hourhistory" )
             .html( "24 hours history" )
         ).append(
-            $( "<textarea/>" )
+            $( "<canvas/>" )
             .attr( "id", "hourhistory" )
         ).append(
             $( "<span/>" )
             //.attr( "id", "dayhistory" )
             .html( "Week history" )
         ).append(
-            $( "<textarea/>" )
+            $( "<canvas/>" )
             .attr( "id", "dayhistory" )
         )
-
-
+        .append(
+            $( "<canvas/>" )
+            .attr( "id", "monthhistory" )
+        )
     );
+
+    const hourchart = new Chart(
+        $( '#hourhistory' ),
+        hourconfig
+    );
+
+    const weekchart = new Chart(
+        $( '#dayhistory' ),
+        dayconfig
+    );
+
+    const monthchart = new Chart(
+        $( '#monthhistory' ),
+        weekconfig
+    );
+
 }
 
 function warning_module() {

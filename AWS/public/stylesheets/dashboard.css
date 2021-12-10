@@ -173,7 +173,7 @@ div.warning>h4 {
 }
 
 div.thhistory {
-    height: 220pt !important;
+    height: auto !important;
 }
 
 #hourhistory,

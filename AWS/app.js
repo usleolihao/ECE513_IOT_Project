@@ -11,12 +11,14 @@ const bodyParser = require( 'body-parser' );
 // Models
 const User = require( "./models/user" );
 const Device = require( "./models/device" );
+const History = require( "./models/history" );
 
 // Router
 var indexRouter = require( './routes/index' );
 var usersRouter = require( './routes/users' );
 var deviceRouter = require( './routes/devices' );
 var cloudRouter = require( './routes/cloud' );
+var historyRouter = require('./routes/history');
 
 // app
 var app = express();
@@ -67,6 +69,7 @@ app.use( '/', indexRouter );
 app.use( '/user', usersRouter );
 app.use( '/device', deviceRouter );
 app.use( '/cloud', cloudRouter );
+app.use( '/history', historyRouter );
 
 // catch 404 and forward to error handler
 app.use( function ( req, res, next ) {
