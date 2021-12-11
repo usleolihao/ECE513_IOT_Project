@@ -40,7 +40,7 @@ router.get( '/dayhist', function ( req, res ) {
             email: req.body.email,
             created_at: {
                 $gte: today.toDate(),
-                $lte: moment(today).endOf('day').toDate() )
+                $lte: moment(today).endOf('day').toDate()
             }
         }, function ( err, dayhist ) {
             if ( err ) {
@@ -79,7 +79,7 @@ router.get( '/weekhist', function ( req, res ) {
             email: req.body.email,
             created_at: {
                 $gte: week,
-                $lte: today)
+                $lte: today
             }
         }, function ( err, weekhist ) {
             if ( err ) {
@@ -116,7 +116,7 @@ router.get( '/monthhist', function ( req, res ) {
             email: req.body.email,
             created_at: {
                 $gte: month,
-                $lte: today)
+                $lte: today
             }
         }, function ( err, monthhist ) {
             if ( err ) {
