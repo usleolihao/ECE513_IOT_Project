@@ -164,6 +164,8 @@ function AC_module() {
     );
 }
 
+var set_temp = 74
+
 function Thermostat_module() {
     $( "div#subpanel1" ).append(
         $( '<div/>' )
@@ -227,7 +229,7 @@ function Thermostat_module() {
             .append(
                 $( "<span/>" )
                 .attr( "id", "ac_set_temp" )
-                .html( "83" )
+                .html( set_temp )
             )
             .append(
                 $( "<button/>" )
@@ -237,6 +239,62 @@ function Thermostat_module() {
             )
         )
     );
+
+    $( "#ac_temp_up" ).click( function () {
+        set_actemp( set_temp + 1 );
+    } );
+
+    $( "#ac_temp_down" ).click( function () {
+        set_actemp( set_temp - 1 );
+    } );
+
+    $( 'input:radio[name=ac_mode]' ).change( function () {
+        set_acmode();
+    } );
+}
+
+function set_acmode() {
+    try {
+        let device = $( '#online_device_list' ).find( ":selected" ).val();
+        device = JSON.parse( device );
+        let acmode = $( 'input:radio[name=ac_mode]:checked' ).val();
+        let modes = { "off": 0, "cool": 1, "heat": 2, "auto": 3 };
+        let txcmd = {
+            cmd: "write",
+            deviceid: device.id,
+            deviceapi: device.api,
+            data: {
+                acmode: modes[ acmode ]
+            }
+        };
+        //console.log( JSON.stringify( txcmd ) );
+        onlineCmd( txcmd );
+    } catch ( err ) {
+        //console.log( err );
+        alert( "No available device." );
+        window.location = 'device';
+    }
+}
+
+function set_actemp( value ) {
+    try {
+        let device = $( '#online_device_list' ).find( ":selected" ).val();
+        device = JSON.parse( device );
+        let txcmd = {
+            cmd: "write",
+            deviceid: device.id,
+            deviceapi: device.api,
+            data: {
+                temp: value
+            }
+        };
+        //console.log( JSON.stringify( txcmd ) );
+        onlineCmd( txcmd );
+    } catch ( err ) {
+        //console.log( err );
+        alert( "No available device." );
+        window.location = 'device';
+    }
 }
 
 function getRandomInt( min, max ) {
@@ -260,23 +318,23 @@ var weekpower = [];
 
 for ( var i = 0; i < 24 + 1; i++ ) {
     hourlabels.push( i.toString() );
-    hourtemp.push(getRandomInt(50,105));
-    hourhum.push(getRandomInt(0,100));
-    hourpower.push(getRandomInt(5,30));
+    hourtemp.push( getRandomInt( 50, 105 ) );
+    hourhum.push( getRandomInt( 0, 100 ) );
+    hourpower.push( getRandomInt( 5, 30 ) );
+}
+
+for ( var i = 0; i < 7 + 1; i++ ) {
+    daylabels.push( i.toString() );
+    daytemp.push( getRandomInt( 50, 105 ) );
+    dayhum.push( getRandomInt( 0, 100 ) );
+    daypower.push( getRandomInt( 5, 30 ) );
 }
 
 for ( var i = 0; i < 30 + 1; i++ ) {
-    daylabels.push( i.toString() );
-    daytemp.push(getRandomInt(50,105));
-    dayhum.push(getRandomInt(0,100));
-    daypower.push(getRandomInt(5,30));
-}
-
-for ( var i = 0; i < 4 + 1; i++ ) {
     weeklabels.push( i.toString() );
-    weektemp.push(getRandomInt(50,105));
-    weekhum.push(getRandomInt(0,100));
-    weekpower.push(getRandomInt(5,30));
+    weektemp.push( getRandomInt( 50, 105 ) );
+    weekhum.push( getRandomInt( 0, 100 ) );
+    weekpower.push( getRandomInt( 5, 30 ) );
 }
 
 var hourdata = {

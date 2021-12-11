@@ -105,6 +105,7 @@ function cloudSuccess( data, textStatus, jqXHR ) {
             // update GUI
             updateGUI( data.data );
         } else if ( data.cmd === "write" ) {
+            console.log( data );
             if ( "smartlight" in data.subcmd ) {
                 //console.log( data );
                 if ( !data.success ) {
@@ -114,6 +115,22 @@ function cloudSuccess( data, textStatus, jqXHR ) {
                 } else {
                     let light_icon = data.subcmd.smartlight.on ? led_on : led_off;
                     $( "#smartlightonoff" ).attr( "src", light_icon );
+                }
+            }
+
+            if ( "temp" in data.subcmd ) {
+                if ( data.success ) {
+                    set_temp = data.subcmd.temp;
+                    $( "#ac_set_temp" ).html( set_temp );
+                } else {
+                    alert( "A/C control is offline" );
+                }
+            }
+
+            if ( "acmode" in data.subcmd ) {
+                if ( !data.success ) {
+                    alert( "A/C control is offline" );
+                    $("#ac_off").prop("checked", true);
                 }
             }
         } else {
