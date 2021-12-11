@@ -216,17 +216,17 @@ void loop()
 
   if (isnan(hum))
   {
-    Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
+    //Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
     hum = 0;
   }
   else if (isnan(cel))
   {
-    Log.info("{\"msg\":Failed to read celcius from DHT sensor!}");
+    //Log.info("{\"msg\":Failed to read celcius from DHT sensor!}");
     cel = 0;
   }
   else if (isnan(far))
   {
-    Log.info("{\"msg\":Failed to read farenheit from DHT sensor!}");
+    //Log.info("{\"msg\":Failed to read farenheit from DHT sensor!}");
     far = 0;
   }
 
@@ -239,7 +239,7 @@ void loop()
     counter_serial = 0;
     Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f,\"acmode\":%d,\"actemp\":%d,\"doorstatus\":%s,\"door_opentime\":%ld,\"power_consumption\":%.2lf}",
                   (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
-                  period, smart_light_analogvalue, door_analogvalue, hum, cel, far, acmode, actemp, doorstatus ? "Open" : "Close", door_opentime, power_consumption);
+                  period, smart_light_analogvalue, door_analogvalue, hum, cel, far, acmode, actemp, doorstatus ? "\"Open\"" : "\"Close\"", door_opentime, power_consumption);
     Serial.println();
   }
 
