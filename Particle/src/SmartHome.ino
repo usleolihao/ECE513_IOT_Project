@@ -138,6 +138,41 @@ void myWebhookHandler(const char *event, const char *data)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Poweruseage Part
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+float powerUsageCalculate(float runningTime)
+{
+  int acPowerUsage = 1000;
+  // The power uage formula
+  float electricEnergy = runningTime * acPowerUsage;
+  bool airCodinON = true;
+  bool heaterOn = false;
+  // Check for the running time
+  if (runningTime != 0)
+  {
+    // check for the A/C
+    if (airCodinON == true && heaterOn == false)
+    {
+      cout << "Total power consumption for the AC: " << electricEnergy << "WH" << endl;
+      return electricEnergy;
+    }
+    // check for the Heater
+    else if (heaterOn = true && airCodinON == false)
+    {
+      cout << "Total power consumption for the heater :" << electricEnergy << "WH" << endl;
+      return electricEnergy;
+    }
+    else
+    {
+      cout << " check the condition statment  " << endl;
+    }
+  }
+  else{
+    cout << "Both A/C and Heater are Off: 00 " << "WH" << endl;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Particle Part
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // setup() runs once, when the device is first turned on.
@@ -156,13 +191,13 @@ void setup()
   far = 0;
   hum = 0;
   // 0: OFF, 1:Cool, 2: Heat, 3:Auto
-  acmode = 0;        
+  acmode = 0;
   // desired temperature
-  actemp = 0;            
+  actemp = 0;
   // true for open, false for close
-  doorstatus = false; 
+  doorstatus = false;
   // calculated door open time if longer than 10 mins warning
-  door_opentime = 0; 
+  door_opentime = 0;
   power_consumption = 0;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Cloud Part

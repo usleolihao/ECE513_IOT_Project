@@ -9,6 +9,7 @@ const bcrypt = require( "bcryptjs" );
 const fs = require( 'fs' );
 
 const Device = require( "../models/device" );
+const History = require( "../models/history" );
 
 // For encoding/decoding JWT, stored the secret in a separate file On AWS EC2
 const secret = fs.readFileSync( __dirname + '/../keys/jwtkey' ).toString();
@@ -37,6 +38,43 @@ router.post( '/ping', function ( req, res ) {
 router.post( '/read', function ( req, res ) {
     let retData = rxData;
     if ( simulatedTime ) retData[ "simclockOnline" ] = simulatedTime.toString();
+
+    if ( !req.headers[ "x-auth" ] ) {
+        res.status( 401 ).json( { success: false, message: "No authentication token." } );
+        return;
+    }
+
+    let token = req.headers[ "x-auth" ];
+
+    try {
+        // decode token
+        const decoded = jwt.decode( token, secret );
+
+        //save the data
+
+        let dhtdata = new History( {
+            email: decoded.email,
+            temperature: rxData.TemperatureF,
+            humidity: rxData.Humidity,
+            power: rxData.power,
+            created_at: Date.now
+        } );
+
+        dhtdata.save( function ( err, user ) {
+            if ( err ) {
+                res.status( 400 ).json( { success: false, err: err } );
+            } else {
+                let msgStr = `data (${dhtdata}) has been saved.`;
+                res.status( 201 ).json( { success: true, message: msgStr } );
+                console.log( msgStr );
+            }
+        } );
+
+    } catch ( ex ) {
+        // Token was invalid
+        res.status( 401 ).json( { success: false, message: "Invalid authentication token." } );
+    }
+
     res.status( 201 ).json( { cmd: 'read', data: retData } );
 } );
 

@@ -48,6 +48,9 @@ private:
     int sensorVal;
     int sensorMax;
     int sensorMin;
+    int r;
+    int g;
+    int b;
     SmartLightCmdStruct cmd;
     String statusStr;
 };
