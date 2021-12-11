@@ -37,8 +37,8 @@ function initialPanelModules() {
     power_module();
     AC_module();
     Thermostat_module();
-    historyTH_module();
     warning_module();
+    historyTH_module();
 }
 
 function initialLocalbtns() {
@@ -71,43 +71,63 @@ function initRangeSliders() {
     }
 }
 
-function updateGUI( data ) {
+function updateGUI(data) {
     //console.log( data );
-    if ( !guiUpdated ) {
-        if ( "light" in data ) {
-            if ( "L0" in data.light ) {
+    if (!guiUpdated) {
+        if ("light" in data) {
+            if ("L0" in data.light) {
                 let light_icon = data.light.L0 ? led_on : led_off;
-                $( "#smartlightonoff" ).attr( "src", light_icon );
+                $("#smartlightonoff").attr("src", light_icon);
                 //$( '#smartlightonoff' ).prop( "checked",  ).change();
             }
-            if ( "L1" in data.light ) $( '#smartlightMode' ).prop( "checked", data.light.L1 ).change();
-            if ( "b" in data.light ) $( '#birghtnessSlider' ).val( data.light.b ).change();
-            if ( "m" in data.light ) $( '#sensorMinSlider' ).val( data.light.m ).change();
-            if ( "M" in data.light ) $( '#sensorMaxSlider' ).val( data.light.M ).change();
+            if ("L1" in data.light) $('#smartlightMode').prop("checked", data.light.L1).change();
+            if ("b" in data.light) $('#birghtnessSlider').val(data.light.b).change();
+            if ("m" in data.light) $('#sensorMinSlider').val(data.light.m).change();
+            if ("M" in data.light) $('#sensorMaxSlider').val(data.light.M).change();
         }
-        if ( "led" in data ) {
-            if ( "h" in data.led ) $( '#ledHzSlider' ).val( data.led.h ).change();
+        if ("led" in data) {
+            if ("h" in data.led) $('#ledHzSlider').val(data.led.h).change();
         }
         guiUpdated = true;
     }
-    if ( "light" in data ) {
-        if ( "s" in data.light ) $( "#sensorVal" ).html( data.light.s );
-        if ( "b" in data.light ) {
-            $( '#curBrightness' ).css( "background-color", `hsl(61, ${data.light.b}%, 50%)` );
-            $( '#curBrightness' ).html( data.light.b );
+    if ("light" in data) {
+        if ("s" in data.light) $("#sensorVal").html(data.light.s);
+        if ("b" in data.light) {
+            $('#curBrightness').css("background-color", `hsl(61, ${data.light.b}%, 50%)`);
+            $('#curBrightness').html(data.light.b);
         }
     }
-    if ( "simclockOnline" in data ) $( '#onlinesimulatedtime' ).html( data.simclockOnline );
-    if ( "simclockLocal" in data ) $( '#localsimulatedtime' ).html( data.simclockLocal );
+    if ("simclockOnline" in data) $('#onlinesimulatedtime').html(data.simclockOnline);
+    if ("simclockLocal" in data) $('#localsimulatedtime').html(data.simclockLocal);
 
     //updated door senosr widget 2.0
-    if ( "door_sensor" in data ) {
-        if ( data.door_sensor > 500 ) $( '#doorstatus' ).html( "Open" );
-        else $( '#doorstatus' ).html( "Close" );
+    if ("doorstatus" in data) {
+        $('#doorstatus').html(data.doorstatus);
     }
     // updated humidity widget 2.0
-    if ( "Humidity" in data ) $( '#humidity' ).html( data.Humidity );
+    if ("Humidity" in data) $('#humidity').html(data.Humidity);
     // updated Temperature widget 2.0
-    if ( "TemperatureF" in data ) $( '#Temperature_Farenheit' ).html( data.TemperatureF ? data.TemperatureF : "fail" );
-    if ( "TemperatureC" in data ) $( '#Temperature_Celcius' ).html( data.TemperatureC ? data.TemperatureC : "fail" );
+    if ("TemperatureF" in data) $('#Temperature_Farenheit').html(data.TemperatureF ? data.TemperatureF : "fail");
+    if ("TemperatureC" in data) $('#Temperature_Celcius').html(data.TemperatureC ? data.TemperatureC : "fail");
+    // updates acmode 2.0
+    if ("acmode" in data) {
+        $("#" + modes[data.acmode]).prop("checked", true);
+        $("#ac_status").text(modes[data.acmode].toUpperCase());
+    }
+    // updates actemp
+    if ("actemp" in data) $("#ac_set_temp").html(data.actemp);
+    // door_opentime for warning
+    if ("door_opentime" in data) {
+        // larger than one min warning
+        if (data.door_opentime > 60) {
+            $('.warning').show();
+            $('#warningtext').html("Door has opened " +  (data.door_opentime/60).toFixed() + " minutes");
+        } else {
+            $('.warning').hide();
+        }
+    }
+    // updated power_consumption
+    if ("power_consumption" in data) $("#power_cons").html(data.power_consumption + "kw");
+
+
 }

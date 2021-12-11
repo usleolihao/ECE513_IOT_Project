@@ -8,6 +8,8 @@ function serailCmd(data) {
     }).done(serailSuccess).fail(serialFailure);
 }
 
+const modes = { 0: "ac_off", 1: "ac_cool", 2: "ac_heat", 3: "ac_auto" };
+
 function serailSuccess(data, textStatus, jqXHR) {
     if ("cmd" in data) {
         if (data.cmd === "scan") updateAvailableSerialList(data);
@@ -16,7 +18,7 @@ function serailSuccess(data, textStatus, jqXHR) {
         else if (data.cmd === "write") {
             //console.log(data);
             if ("smartlight" in data.subcmd) {
-                console.log( data );
+                console.log(data);
                 if (!data.success) {
                     //let res = JSON.parse(data.error.response.text);
                     $("#smartlightonoff").attr("src", led_off);
@@ -40,6 +42,8 @@ function serailSuccess(data, textStatus, jqXHR) {
                 if (!data.success) {
                     alert("A/C control is offline");
                     $("#ac_off").prop("checked", true);
+                } else {
+                    $("#" + modes[data.subcmd.acmode]).prop("checked", true);
                 }
             }
         }

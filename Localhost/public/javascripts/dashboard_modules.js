@@ -158,7 +158,7 @@ function AC_module() {
         ).append(
             $("<span/>")
             .attr("id", "ac_status")
-            .html("Paused")
+            .html("OFF")
         )
     );
 }

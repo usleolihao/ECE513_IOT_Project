@@ -61,6 +61,7 @@ int acmode;         // 0: OFF, 1:Cool, 2: Heat, 3:Auto
 int actemp;         // desired temperature
 bool doorstatus;    // true for open, false for close
 long door_opentime; // calculated door open time if longer than 10 mins warning
+long door_opentime2; 
 double power_consumption;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,14 @@ void serialCmdProcessing()
     else if (iter.name() == "led")
     {
       toggleLed.cmdProcessing(iter.value());
+    }
+    else if (iter.name() == "acmode")
+    {
+      acmode = iter.value().toInt();
+    }
+    else if (iter.name() == "temp")
+    {
+      actemp = iter.value().toInt();
     }
   }
 }
@@ -123,6 +132,14 @@ void cloudCmdProcessing()
     else if (iter.name() == "led")
     {
       toggleLed.cmdProcessing(iter.value());
+    }
+    else if (iter.name() == "acmode")
+    {
+      acmode = iter.value().toInt();
+    }
+    else if (iter.name() == "temp")
+    {
+      actemp = iter.value().toInt();
     }
   }
   rxCloudCmdStr = "";
@@ -163,6 +180,7 @@ void setup()
   doorstatus = false;
   // calculated door open time if longer than 10 mins warning
   door_opentime = 0;
+  door_opentime2 = 0;
   power_consumption = 0;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Cloud Part
@@ -216,18 +234,42 @@ void loop()
 
   if (isnan(hum))
   {
-    //Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
+    // Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
     hum = 0;
   }
   else if (isnan(cel))
   {
-    //Log.info("{\"msg\":Failed to read celcius from DHT sensor!}");
+    // Log.info("{\"msg\":Failed to read celcius from DHT sensor!}");
     cel = 0;
   }
   else if (isnan(far))
   {
-    //Log.info("{\"msg\":Failed to read farenheit from DHT sensor!}");
+    // Log.info("{\"msg\":Failed to read farenheit from DHT sensor!}");
     far = 0;
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Door status
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (door_analogvalue < 100)
+  {
+    doorstatus = false;
+    door_opentime2 = 0;
+  }
+  else
+  {
+    doorstatus = true;
+    door_opentime2 = (int)Time.now();
+  }
+
+  // if door is open, count ms
+  if (doorstatus)
+  {
+    door_opentime = ((int)Time.now() - door_opentime2)/1000; //ms to s
+  }
+  else
+  {
+    door_opentime = 0; // reset open time if closed
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -250,7 +292,9 @@ void loop()
   if (counter_cloud % (PUBLISH_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_cloud = 0;
-    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f}", (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(), smart_light_analogvalue, door_analogvalue, hum, cel, far);
+    statusStr = String::format("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f,\"acmode\":%d,\"actemp\":%d,\"doorstatus\":%s,\"door_opentime\":%ld,\"power_consumption\":%.2lf}",
+                               (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
+                               period, smart_light_analogvalue, door_analogvalue, hum, cel, far, acmode, actemp, doorstatus ? "\"Open\"" : "\"Close\"", door_opentime, power_consumption);
     if (bPublish)
     {
       Particle.publish("smarthome", statusStr, PRIVATE);

@@ -183,8 +183,7 @@ function updateGUI( data ) {
 
     //updated door senosr widget 2.0
     if ( "door_sensor" in data ) {
-        if ( data.door_sensor > 500 ) $( '#doorstatus' ).html( "Open" );
-        else $( '#doorstatus' ).html( "Close" );
+        $( '#doorstatus' ).html( data.doorstatus );
     }
     // updated humidity widget 2.0
     if ( "Humidity" in data ) $( '#humidity' ).html( data.Humidity );
