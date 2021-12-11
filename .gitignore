@@ -7,3 +7,4 @@ node_modules/*
 Particle/target/*
 Particle/.vscode/settings.json
 Localhost.zip
+Particle/src/SmartHome.cpp
