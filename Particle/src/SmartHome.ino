@@ -1,6 +1,6 @@
 /*
  * ECE 513 Final Project Samrt Home
- * Description: 
+ * Description:
  * Smart light / Sensor DHT11 / Publish / Reading value
  * Author: Lihao Guo, Nasser Salem Albalawi
  * Date: 11/26/2021
@@ -26,7 +26,7 @@ SYSTEM_THREAD(ENABLED);
 SerialLogHandler logHandler;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Global variables
+// Global variables
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Sensor Variables
 CSmartLight smartLight;
@@ -58,7 +58,7 @@ uint8_t ledHighLow;
 
 // Variables for Thermostat/Power consumption/door status
 int acmode;         // 0: OFF, 1:Cool, 2: Heat, 3:Auto
-double actemp;      // desired temperature
+int actemp;         // desired temperature
 bool doorstatus;    // true for open, false for close
 long door_opentime; // calculated door open time if longer than 10 mins warning
 double power_consumption;
@@ -92,13 +92,13 @@ void serialCmdProcessing()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Cloud Cmd Processing
+// Cloud Cmd Processing
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // function to receive command via internet
 int updateRxCmd(String cmdStr)
 {
-  //Serial.println(cmdStr.c_str());
+  // Serial.println(cmdStr.c_str());
   rxCloudCmdStr = cmdStr;
   return 0;
 }
@@ -138,41 +138,6 @@ void myWebhookHandler(const char *event, const char *data)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Poweruseage Part
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-float powerUsageCalculate(float runningTime)
-{
-  int acPowerUsage = 1000;
-  // The power uage formula
-  float electricEnergy = runningTime * acPowerUsage;
-  bool airCodinON = true;
-  bool heaterOn = false;
-  // Check for the running time
-  if (runningTime != 0)
-  {
-    // check for the A/C
-    if (airCodinON == true && heaterOn == false)
-    {
-      cout << "Total power consumption for the AC: " << electricEnergy << "WH" << endl;
-      return electricEnergy;
-    }
-    // check for the Heater
-    else if (heaterOn = true && airCodinON == false)
-    {
-      cout << "Total power consumption for the heater :" << electricEnergy << "WH" << endl;
-      return electricEnergy;
-    }
-    else
-    {
-      cout << " check the condition statment  " << endl;
-    }
-  }
-  else{
-    cout << "Both A/C and Heater are Off: 00 " << "WH" << endl;
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Particle Part
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // setup() runs once, when the device is first turned on.
@@ -184,7 +149,7 @@ void setup()
   // Put initialization like pinMode and begin functions here.
   pinMode(LED, OUTPUT);
   RGB.control(true);
-  RGB.color(RGB_R_DEAULT, RGB_G_DEAULT, RGB_B_DEAULT); // default color
+  RGB.color(255, 255, 255); // default color
   counter_serial = 0;
   counter_cloud = 0;
   cel = 0;
@@ -236,7 +201,7 @@ void loop()
   unsigned long t = millis();
   unsigned long period = millis() - t;
 
-  //the value of the photoresistors and store them in the int variables
+  // the value of the photoresistors and store them in the int variables
   smart_light_analogvalue = analogRead(LIGHT_SENSOR);
   door_analogvalue = analogRead(DOOR_SENSOR);
 
@@ -249,7 +214,6 @@ void loop()
   // Read Humidity as %
   hum = dht.getHumidity();
 
-  // if failed to read value, set the value to 0 to avoid error
   if (isnan(hum))
   {
     Log.info("{\"msg\":Failed to read humidity from DHT sensor!}");
@@ -273,9 +237,9 @@ void loop()
   if (counter_serial % (SERAIL_COMM_FREQUENCY * LOOP_FREQUENCY) == 0)
   {
     counter_serial = 0;
-    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f}",
+    Serial.printf("{\"t\":%d,\"light\":%s,\"led\":%s,\"ct\":%ld,\"led_sensor\":%d,\"door_sensor\":%d,\"Humidity\":%.2f,\"TemperatureC\":%.2f,\"TemperatureF\":%.2f,\"acmode\":%d,\"actemp\":%d,\"doorstatus\":%s,\"door_opentime\":%ld,\"power_consumption\":%.2lf}",
                   (int)Time.now(), smartLight.getStatusStr().c_str(), toggleLed.getStatusStr().c_str(),
-                  period, smart_light_analogvalue, door_analogvalue, hum, cel, far);
+                  period, smart_light_analogvalue, door_analogvalue, hum, cel, far, acmode, actemp, doorstatus ? "Open" : "Close", door_opentime, power_consumption);
     Serial.println();
   }
 
