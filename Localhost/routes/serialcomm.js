@@ -140,11 +140,11 @@ function writePort(req, res) {
         serialComPort.write(JSON.stringify(req.body.data), function(err) {
             if (err) {
                 let msg = 'Error on write: ' + JSON.stringify(err.message);
-                res.status(201).json({ cmd: req.body.cmd, msg: msg });
+                res.status(201).json({ cmd: req.body.cmd, msg: msg, subcmd: req.body.data, error: err, success: false });
                 console.log(msg);
             } else {
                 let msg = 'message written';
-                res.status(201).json({ cmd: req.body.cmd, msg: msg });
+                res.status(201).json({ cmd: req.body.cmd, msg: msg, subcmd: req.body.data, success: true });
                 console.log(msg);
             }
         });

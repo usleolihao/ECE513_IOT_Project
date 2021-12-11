@@ -1,17 +1,17 @@
 var OnlineInterval = null;
 
 
-function updateAvailableDevicelList( data ) {
-    for ( let device in data ) {
-        let deviceid = data[ device ].deviceid;
-        let deviceapi = data[ device ].deviceapi;
-        let json = JSON.stringify( { id: deviceid, api: deviceapi } );
+function updateAvailableDevicelList(data) {
+    for (let device in data) {
+        let deviceid = data[device].deviceid;
+        let deviceapi = data[device].deviceapi;
+        let json = JSON.stringify({ id: deviceid, api: deviceapi });
         let option = `<option id=device"${device}" value=${json}>ID:${deviceid}</option>`;
-        $( '#online_device_list' ).append( option );
+        $('#online_device_list').append(option);
     }
     //console.log(data.length);
-    if ( data.length == 1 ) {
-        $( "#online_device_list option:eq(1)" ).prop( "selected", true );
+    if (data.length == 1) {
+        $("#online_device_list option:eq(1)").prop("selected", true);
     }
 
 }
@@ -19,131 +19,131 @@ function updateAvailableDevicelList( data ) {
 
 // list devices
 function getOnlineDevices() {
-    $.ajax( {
+    $.ajax({
             url: '/device/list',
             method: 'GET',
-            headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
+            headers: { 'x-auth': window.localStorage.getItem("authToken") },
             dataType: 'json'
-        } ).done( function ( data, textStatus, jqXHR ) {
+        }).done(function(data, textStatus, jqXHR) {
             // Add new device to the device list
-            if ( data.success ) {
+            if (data.success) {
                 //console.log( data.devices.devices );
-                updateAvailableDevicelList( data.devices.devices );
+                updateAvailableDevicelList(data.devices.devices);
             }
-        } )
-        .fail( function ( jqXHR, textStatus, errorThrown ) {
-            let response = JSON.parse( jqXHR.responseJSON );
-            errormsg( response.message );
-        } );
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            let response = JSON.parse(jqXHR.responseJSON);
+            errormsg(response.message);
+        });
 }
 
 
-function onlineCmd( data ) {
+function onlineCmd(data) {
     const GETMETHOD = []
     ajaxMethod = 'POST';
-    if ( GETMETHOD.includes( data.cmd ) ) {
+    if (GETMETHOD.includes(data.cmd)) {
         ajaxMethod = 'GET';
     }
-    $.ajax( {
+    $.ajax({
         url: '/cloud/' + data.cmd,
         method: ajaxMethod,
         contentType: 'application/json',
-        headers: { 'x-auth': window.localStorage.getItem( "authToken" ) },
-        data: JSON.stringify( data ),
+        headers: { 'x-auth': window.localStorage.getItem("authToken") },
+        data: JSON.stringify(data),
         dataType: 'json'
-    } ).done( cloudSuccess ).fail( cloudFailure );
+    }).done(cloudSuccess).fail(cloudFailure);
 }
 
-function cloudFailure( jqXHR, textStatus, errorThrown ) {
-    $( '#online_com_status' ).html( JSON.stringify( jqXHR, null, 2 ) );
+function cloudFailure(jqXHR, textStatus, errorThrown) {
+    $('#online_com_status').html(JSON.stringify(jqXHR, null, 2));
 }
 
-function cloudSuccess( data, textStatus, jqXHR ) {
+function cloudSuccess(data, textStatus, jqXHR) {
 
-    if ( "cmd" in data ) {
-        if ( data.cmd === "ping" ) {
+    if ("cmd" in data) {
+        if (data.cmd === "ping") {
             let msg = `Device is ${data.success && data.data.online ? "Online":"Offline"}`;
-            $( '#online_com_status' ).html( msg );
-        } else if ( data.cmd === "publish" ) {
+            $('#online_com_status').html(msg);
+        } else if (data.cmd === "publish") {
             //console.log( data );
             let msg = "";
-            if ( data.status ) {
+            if (data.status) {
                 msg = `Device published ${data.success ? "successful":"fail"}`;
-                if ( data.success ) {
-                    OnlineInterval = setInterval( function () {
-                        onlineCmd( { cmd: "read" } );
-                    }, 1000 );
+                if (data.success) {
+                    OnlineInterval = setInterval(function() {
+                        onlineCmd({ cmd: "read" });
+                    }, 1000);
                 }
             } else {
                 msg = `Device disabled publish ${data.success ? "successful":"fail"}`;
-                if ( data.success ) {
-                    if ( OnlineInterval != null ) {
-                        clearInterval( OnlineInterval );
+                if (data.success) {
+                    if (OnlineInterval != null) {
+                        clearInterval(OnlineInterval);
                         OnlineInterval = null;
                     }
                 }
             }
 
-            $( '#online_com_status' ).html( msg );
-        } else if ( data.cmd == "value" ) {
+            $('#online_com_status').html(msg);
+        } else if (data.cmd == "value") {
             //console.log( data );
-            if ( data.success ) {
-                $( '#online_com_status' ).html( "Read variable successfully." );
-                updateGUI( data.data );
+            if (data.success) {
+                $('#online_com_status').html("Read variable successfully.");
+                updateGUI(data.data);
             } else {
-                $( '#online_com_status' ).html( data );
+                $('#online_com_status').html(data);
             }
 
-        }
-        //else if ( data.cmd === "open" ) finishOpenClose( data );
-        //else if ( data.cmd === "close" ) finishOpenClose( data );
-        else if ( data.cmd === "read" ) {
-            let curStr = $( '#rdData' ).html();
-            curStr += JSON.stringify( data.data );
-            $( '#rdData' ).html( curStr );
-            document.getElementById( "rdData" ).scrollTop = document.getElementById( "rdData" ).scrollHeight;
-            // update GUI
-            updateGUI( data.data );
-        } else if ( data.cmd === "write" ) {
-            console.log( data );
-            if ( "smartlight" in data.subcmd ) {
+        } else if (data.cmd === "write") {
+            console.log(data);
+            if ("smartlight" in data.subcmd) {
                 //console.log( data );
-                if ( !data.success ) {
-                    let res = JSON.parse( data.error.response.text );
-                    $( "#smartlightonoff" ).attr( "src", led_off );
-                    alert( res.error );
+                if (!data.success) {
+                    let res = JSON.parse(data.error.response.text);
+                    $("#smartlightonoff").attr("src", led_off);
+                    alert(res.error);
                 } else {
                     let light_icon = data.subcmd.smartlight.on ? led_on : led_off;
-                    $( "#smartlightonoff" ).attr( "src", light_icon );
+                    $("#smartlightonoff").attr("src", light_icon);
                 }
             }
 
-            if ( "temp" in data.subcmd ) {
-                if ( data.success ) {
+            if ("temp" in data.subcmd) {
+                if (data.success) {
                     set_temp = data.subcmd.temp;
-                    $( "#ac_set_temp" ).html( set_temp );
+                    $("#ac_set_temp").html(set_temp);
                 } else {
-                    alert( "A/C control is offline" );
+                    alert("A/C control is offline");
                 }
             }
 
-            if ( "acmode" in data.subcmd ) {
-                if ( !data.success ) {
-                    alert( "A/C control is offline" );
+            if ("acmode" in data.subcmd) {
+                if (!data.success) {
+                    alert("A/C control is offline");
                     $("#ac_off").prop("checked", true);
                 }
             }
+        }
+        //else if ( data.cmd === "open" ) finishOpenClose( data );
+        //else if ( data.cmd === "close" ) finishOpenClose( data );
+        if (data.cmd === "read") {
+            let curStr = $('#rdData').html();
+            curStr += JSON.stringify(data.data);
+            $('#rdData').html(curStr);
+            document.getElementById("rdData").scrollTop = document.getElementById("rdData").scrollHeight;
+            // update GUI
+            updateGUI(data.data);
         } else {
-            $( '#cmdStatusData' ).html( JSON.stringify( data, null, 2 ) );
+            $('#cmdStatusData').html(JSON.stringify(data, null, 2));
 
         }
     }
 }
 
-function smartLightControl( option, value ) {
+function smartLightControl(option, value) {
     try {
-        let device = $( '#online_device_list' ).find( ":selected" ).val();
-        device = JSON.parse( device );
+        let device = $('#online_device_list').find(":selected").val();
+        device = JSON.parse(device);
         let txcmd = {
             cmd: "write",
             deviceid: device.id,
@@ -152,20 +152,20 @@ function smartLightControl( option, value ) {
                 smartlight: {}
             }
         };
-        txcmd.data.smartlight[ option ] = value;
+        txcmd.data.smartlight[option] = value;
         //console.log( JSON.stringify( txcmd ) );
-        onlineCmd( txcmd );
-    } catch ( err ) {
+        onlineCmd(txcmd);
+    } catch (err) {
         //console.log( err );
-        alert( "No available device." );
+        alert("No available device.");
         window.location = 'device';
     }
 
 }
 
-function toggleLedControl( value ) {
-    let device = $( '#online_device_list' ).find( ":selected" ).val();
-    device = JSON.parse( device );
+function toggleLedControl(value) {
+    let device = $('#online_device_list').find(":selected").val();
+    device = JSON.parse(device);
     let txcmd = {
         cmd: "write",
         deviceid: device.id,
@@ -175,5 +175,5 @@ function toggleLedControl( value ) {
         }
     };
     //console.log( JSON.stringify( txcmd ) );
-    onlineCmd( txcmd );
+    onlineCmd(txcmd);
 }
