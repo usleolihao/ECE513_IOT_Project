@@ -63,6 +63,54 @@ bool doorstatus;    // true for open, false for close
 long door_opentime; // calculated door open time if longer than 10 mins warning
 long door_opentime2; 
 double power_consumption;
+long acstarttime;
+long actime;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Thermostat and Power consumpution
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+void thermostat(){
+    long diff_time = 0;
+    // if mode == 0 that's off do nothing
+    //if mode == 1 cooling mode == 2 heating 
+    if (acmode ==1 || acmode == 2){
+      //cooling and heating
+      //calucate time
+       diff_time = (int)Time.now() -  acstarttime;
+    }
+    // if mode == 3 auto
+    if (acmode ==3){
+        //auto if  far(this is current degree in Farh ) > than dtemp
+        if (far > actemp){
+        //  make it cool
+          diff_time = (int)Time.now() -  acstarttime;
+        }
+        // else lower heat
+        else if ( far < actemp){
+          diff_time = (int)Time.now() -  acstarttime;
+        }
+    }
+
+    actime += diff_time;
+}
+// Power consumption 
+double powerused(){
+  //formala
+  double electricEnergy = (actime / 1000 / 3600) * 1000;
+  //return final power used
+  if (actime !=0){
+    if (acmode ==1){
+      return electricEnergy ;
+    }
+    else if (acmode ==2){
+      return electricEnergy ;
+    }
+    else if (acmode ==3){
+      return electricEnergy ;
+    }
+
+  }
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Serial Cmd Processing
@@ -92,6 +140,9 @@ void serialCmdProcessing()
     else if (iter.name() == "acmode")
     {
       acmode = iter.value().toInt();
+      if (acmode != 0){
+        acstarttime = (int)Time.now();
+      }
     }
     else if (iter.name() == "temp")
     {
@@ -272,6 +323,8 @@ void loop()
     door_opentime = 0; // reset open time if closed
   }
 
+  thermostat();
+  power_consumption = powerused();
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Serial Cmd Part
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
