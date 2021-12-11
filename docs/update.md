@@ -1,8 +1,8 @@
 ### v2.0.1 12/09/2021
 
 - Localhost
-	- [ ] Updated localhost GUI
-	- [ ] Updated loading values
+	- [x] Updated localhost GUI
+	- [x] Updated loading values
 - DASHBOARD
 	- catch error when no device found
 	- History chart
