@@ -1,0 +1,397 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: url("../images/bg2.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+body>div.centerDiv h2 {
+    color: #171619;
+}
+
+
+.modal-center>ul {
+    border: 1px solid #ffffff;
+    width: 94vw;
+    opacity: 0.9;
+    margin-top: 2vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+select {
+    display: inline-block;
+}
+
+li.collection-header~.smartlightpanel {
+    column-count: 3;
+}
+
+div.slideroffsets {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+i.fa-cloud {
+    color: skyblue;
+}
+
+i.fa-sun {
+    color: red;
+}
+
+
+.controlpanel {
+    padding: 10pt;
+    color: whitesmoke;
+    background-color: #475fec;
+    border-radius: 5pt;
+}
+
+.controlpanel>div.modulized {
+    padding-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: visible;
+    border-bottom: 1px solid #999;
+    height: auto;
+}
+
+.controlpanel>div.modulized>div {
+    color: black;
+    border: 1px solid;
+    border-radius: 15px;
+    padding: 1.5%;
+    margin: 1%;
+    background-color: lightcyan;
+    width: auto;
+    height: auto;
+}
+
+.controlpanel>div.modulized>div.widgets {
+    width: 23%;
+    height: 100pt;
+    text-align: center;
+}
+
+/* Specialize the certain widgets */
+.controlpanel>div.modulized>div.weather {
+    width: 48%;
+    height: auto;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+        "mb mb mb mb mr mr"
+        "mb mb mb mb mr mr";
+}
+
+
+[id^='weather_icon'] {
+    width: 75px;
+    justify-self: center;
+    grid-area: mr;
+}
+
+[class^='weather_text'] {
+    padding: 5px;
+    display: grid;
+    grid-area: mb;
+    grid-template-areas:
+        "a b b d"
+        "a c c d"
+        "g h h h";
+}
+
+#weather_city {
+    grid-area: g;
+    justify-self: left;
+}
+
+#weather_temp {
+    font-size: 2.5em;
+    grid-area: a;
+}
+
+#weather_tempmax {
+    font-size: 1.3em;
+    grid-area: b;
+}
+
+#weather_tempfeel {
+    grid-area: d;
+    font-size: 1.3em;
+}
+
+#weather_tempmin {
+    font-size: 1.3em;
+    grid-area: c;
+}
+
+#weather_tempmax::before {
+    content: "H:";
+}
+
+#weather_tempmin::before {
+    content: "L:";
+}
+
+#weather_tempfeel::before {
+    content: "F:";
+}
+
+#smartlightonoff {
+    height: 50pt;
+    width: auto;
+}
+
+#weather_humidity {
+    grid-area: h;
+    font-size: 1.2 em;
+    font-weight: bold;
+}
+
+#weather_humidity::before {
+    content: "Hum:";
+}
+
+[id^=weather_temp]::after {
+    content: '°';
+}
+
+[id$=humidity]::after {
+    content: "%";
+}
+
+div.warning,
+div.thhistory {
+    width: 99% !important;
+}
+
+div.warning>h4 {
+    color: red !important;
+}
+
+div.thhistory {
+    height: auto !important;
+}
+
+#hourhistory,
+#dayhistory {
+    height: 65pt;
+    pointer-events: none;
+}
+
+div.temperature {
+    display: grid;
+    grid-template-areas:
+        "a a"
+        "b c";
+}
+
+div.temperature>h4 {
+    grid-area: a;
+}
+
+[id^=Temperature_]::after {
+    content: "°";
+}
+
+[id^=Temperature_Celcius]::before {
+    content: "C:";
+}
+
+[id^=Temperature_Farenheit]::before {
+    content: "F:";
+}
+
+div.led {
+    height: 100pt !important;
+    width: 23% !important;
+}
+
+div.thermostat {
+    height: 200pt !important;
+    width: 48% !important;
+}
+
+.acmode_selector input {
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.ac_off {
+    background-image: url(../images/thermostat/OFF.png);
+}
+
+.ac_cool {
+    background-image: url(../images/thermostat/cooling.png);
+}
+
+.ac_heat {
+    background-image: url(../images/thermostat/heating.png);
+}
+
+.ac_auto {
+    background-image: url(../images/thermostat/auto_icon.png);
+}
+
+.acmode_selector input:active+.acmode {
+    opacity: .9;
+}
+
+.acmode_selector input:checked+.acmode {
+    -webkit-filter: none;
+    -moz-filter: none;
+    filter: none;
+}
+
+.acmode {
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 50px;
+    height: 35px;
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+    -webkit-filter: brightness(1.4) grayscale(1) opacity(.7);
+    -moz-filter: brightness(1.4) grayscale(1) opacity(.7);
+    filter: brightness(1.4) grayscale(1) opacity(.7);
+}
+
+.acmode:hover {
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+    -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+    filter: brightness(1.2) grayscale(.5) opacity(.9);
+}
+
+div.ac_dial {
+    height: 150px;
+    background-image: url(../images/thermostat/circle.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    text-align: center;
+}
+
+#ac_set_temp {
+    position: relative;
+    top: 46%;
+    font-size: 1.5rem;
+}
+
+#ac_set_temp::after {
+    content: "°";
+}
+
+#power_cons::after{
+    content: "kw";
+}
+
+#ac_temp_down {
+    position: relative;
+    top: 46%;
+    right: 25%;
+}
+
+#ac_temp_up {
+    position: relative;
+    top: 46%;
+    left: 25%;
+}
+
+.smartlightpanel {
+    display: flex;
+}
+
+@media screen and (max-width: 600px) {
+    .controlpanel>div.modulized>div.widgets {
+        width: 48%;
+        height: 50pt;
+        text-align: center;
+    }
+
+    .controlpanel>div.modulized>div.weather {
+        width: 99%;
+        height: auto;
+        display: grid;
+        grid-gap: 0;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-areas:
+            "mb mb mb mb mr mr"
+            "mb mb mb mb mr mr";
+    }
+
+
+    [class^='weather_text'] {
+        padding: 5px;
+        display: grid;
+        grid-area: mb;
+        grid-template-areas:
+            "a a a b b"
+            "a a a c c"
+            "d d d c c"
+            "g g g h h";
+    }
+
+    [id^='weather_icon'] {
+        width: 70%;
+        justify-self: center;
+        grid-area: mr;
+    }
+
+    #weather_temp {
+        font-size: 2em;
+        grid-area: a;
+        margin-right: 5pt;
+    }
+
+    #weather_tempmax {
+        font-size: 1 em;
+        grid-area: b;
+    }
+
+    #weather_tempfeel {
+        grid-area: d;
+        font-size: 1 em;
+    }
+
+    #weather_tempmin {
+        font-size: 1 em;
+        grid-area: c;
+    }
+
+    #hourhistory,
+    #dayhistory {
+        height: 70pt;
+    }
+
+    div.led {
+        width: 48% !important;
+    }
+
+    div.thermostat {
+        height: 200pt !important;
+        width: 99% !important;
+    }
+
+    div.temperature {
+        height: 100pt !important;
+        font-size: 2rem !important;
+        display: grid;
+        grid-template-areas:
+            "a"
+            "b"
+            "b";
+    }
+
+    div.temperature>h4 {
+        grid-area: a;
+    }
+
+}

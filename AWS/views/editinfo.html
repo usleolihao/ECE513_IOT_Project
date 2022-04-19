@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% block title %}
+{{title}}
+{%endblock%}
+{% block head %}
+<link rel="stylesheet" href="stylesheets/materialize.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+<!-- Helper function -->
+<script src="javascripts/common.js"></script>
+<script src="javascripts/validation.js"></script>
+<!-- main script -->
+<script src="javascripts/edit.js"></script>
+<link rel="stylesheet" href="stylesheets/account.css">
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="account">Account</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="dashboard">Dashboard</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="devices">Devices</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Edit Info</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" id="logoutbtn">Logout</a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="modal-center">
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h4>Account details <i class="fas fa-address-card" id="toaccount"></i></h4>
+        </li>
+        <li class="collection-item">Email: <span id="email"></span></li>
+        <li class="collection-item">
+            <div class="input-field">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName">
+            </div>
+            <div class="input-field">
+                <label for="zip">Zip code</label>
+                <input type="text" id="zip" name="zip">
+            </div>
+            <div class="input-field">
+                <label for="cpassword">Current Password</label>
+                <input type="password" id="cpassword" name="cpassword">
+            </div>
+            <div class="input-field">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="input-field">
+                <label for="passwordConfirm">Confirm New Password</label>
+                <input type="password" id="passwordConfirm" name="passwordConfirm">
+            </div>
+        </li>
+        <li class="collection-item">Preference Panel:
+            <input type="radio" id="account" name="dashboard" value="false">
+            <label for="account">Account</label>
+            <input type="radio" id="dashboard" name="dashboard" value="true">
+            <label for="dashboard">Dashboard</label>
+        </li>
+        <li class="collection-item">Last Access: <span id="lastAccess"></span></li>
+    </ul>
+    <ul class="collection with-header">
+        <li class="collection-item" id="formErrors" style=" text-align: left; display:none;">
+        </li>
+        <li class="collection-item" style=" text-align: center;">
+            <button id="edit" class="waves-effect waves-light btn">Edit Account</button>
+            <a href="account"><button class="waves-effect waves-light btn">Cancel</button></a>
+        </li>
+        <li class="collection-item" style=" text-align: center;">
+            <button id="deleteaccount" class="waves-effect waves-light btn">Delete Account</button>
+        </li>
+    </ul>
+</div>
+{% endblock %}

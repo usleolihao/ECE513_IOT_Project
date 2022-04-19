@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% block title %}
+{{title}}
+{%endblock%}
+{% block head %}
+<link rel="stylesheet" href="stylesheets/materialize.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Helper function -->
+<script src="javascripts/validation.js"></script>
+<link rel="stylesheet" href="stylesheets/sign.css">
+<script src="javascripts/signup.js"></script>
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="/">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Register</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="login">Login</a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="modal-dialog text-center">
+    <div class="col-sm-9 main">
+        <div class="modal-content">
+            <div class="col-12 user-img">
+                <i class="fas fa-user"></i>
+                <h4>User Registration</h4>
+            </div>
+            <div class="col-12">
+                <div class="input-field">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName">
+                </div>
+                <div class="input-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="input-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="input-field">
+                    <label for="passwordConfirm">Confirm Password</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm">
+                </div>
+                <div class="card-panel" id="formErrors" style="display: none">
+                    <ul id="errorlist">
+
+                    </ul>
+                </div>
+                <div class="buttons">
+                    <div><a id="signup" class="waves-effect waves-light blue btn white-text">Sign up</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div id="account">Have an account? <a href="login">Log in</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

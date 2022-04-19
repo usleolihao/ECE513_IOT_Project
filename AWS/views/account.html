@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+{% block title %}
+{{title}}
+{%endblock%}
+{% block head %}
+<link rel="stylesheet" href="stylesheets/materialize.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+<!-- Helper function -->
+<script src="javascripts/common.js"></script>
+<script src="javascripts/validation.js"></script>
+<script src="javascripts/device.js"></script>
+<!-- main script -->
+<script src="javascripts/account.js"></script>
+<link rel="stylesheet" href="stylesheets/account.css">
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Account</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="dashboard">Dashboard</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="devices">Devices</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="edit">Edit Info</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" id="logoutbtn">Logout</a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="modal-center">
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h4>Account details <i class="fas fa-pen-square" id="updateAccInfoBtn"></i></h4>
+        </li>
+        <li class="collection-item">Email: <span id="email"></span></li>
+        <li class="collection-item">Name: <span id="fullName"></span></li>
+        <li class="collection-item">Zip: <span id="zip"></span></li>
+        <li class="collection-item">Preference Panel:
+            <input type="radio" id="account" name="dashboard" value="false">
+            <label for="account">Account</label>
+            <input type="radio" id="dashboard" name="dashboard" value="true">
+            <label for="dashboard">Dashboard</label>
+        </li>
+        <li class="collection-item">Last Access: <span id="lastAccess"></span></li>
+    </ul>
+    <ul class="collection with-header red-text text-darken-2" id="error" style="display:none;background-color: white;padding: 1rem;">
+    </ul>
+    <ul class="collection with-header" id="devices">
+        <li class="collection-header">
+            <h4>Devices <i class="fas fa-microchip" id="devicesBtn"></i></h4>
+        </li>
+        <li class="collection-item" id="addDeviceForm">
+            <div class="input-field">
+                <label for="deviceid">New Device ID:</label>
+                <input type="text" id="deviceid" name="deviceid" col="30">
+            </div>
+            <div class="input-field">
+                <label for="deviceapi">New Device API:</label>
+                <input type="text" id="deviceapi" name="deviceapi" col="30">
+            </div>
+            <button id="registerdevice" class="waves-effect waves-light btn">Register</button>
+            <button id="deletedevice" class="waves-effect waves-light btn">Delete</button>
+        </li>
+        <li class="collection-item" id="deleteDeviceForm">
+            <div id="deviceList"></div>
+        </li>
+    </ul>
+</div>
+{% endblock %}

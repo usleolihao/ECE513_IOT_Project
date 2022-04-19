@@ -1,0 +1,36 @@
+body {
+    background: url("../images/bg2.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+#updateAccInfoBtn:hover {
+    cursor: pointer;
+}
+
+div .modal-center {
+    margin-top: 15vh;
+}
+
+.modal-center>ul {
+    border: 1px solid #ffffff;
+    width: 94vw;
+    margin-top: 5vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+li.collection-item>input[type="radio"] {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#updateAccInfoBtn,
+i.fa-microchip {
+    color: deepskyblue;
+}
+
+#formErrors{
+    color: red;
+}
